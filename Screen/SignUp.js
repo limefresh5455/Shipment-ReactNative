@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
+import React, { useEffect } from "react";
+// import Icon from "react-native-vector-icons/FontAwesome";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Formik, yupToFormErrors } from "formik";
 import AnimatedInput from "react-native-animated-input";
@@ -42,10 +42,8 @@ const SignupSchema = Yup.object().shape({
 });
 
 const SignUp = ({ navigation }) => {
-
-  
   const handleSubmit = (values) => {
-    alert("Hii!")
+    // alert("Hii!")
     const user = {
       user_fname: values.user_fname,
       user_lname: values.user_lname,
@@ -53,6 +51,7 @@ const SignUp = ({ navigation }) => {
       user_phone: values.user_phone,
       user_password: values.user_password,
     };
+
     fetch(
       "https://shipwwt.com/wp-json/wp/v2/shipwwt-register-user-by-email-password/",
       {
@@ -76,6 +75,10 @@ const SignUp = ({ navigation }) => {
         console.log("errors", e);
       });
   };
+
+  useEffect(() => {
+    console.log("data", data);
+  });
 
   return (
     <Formik
@@ -131,6 +134,11 @@ const SignUp = ({ navigation }) => {
                     value={values.user_fname}
                     placeholder="First name"
                     keyboardType="Years in Business"
+                    styleBodyContent={{
+                      borderBottomWidth: 8,
+                      borderBottomColor: "#57bdff",
+                    }}
+                    styleInput={{ height: 22 }}
                   />
                 </View>
                 {errors.user_fname && (
@@ -144,6 +152,11 @@ const SignUp = ({ navigation }) => {
                     value={values.user_lname}
                     placeholder="Last name"
                     keyboardType="Years in Business"
+                    styleBodyContent={{
+                      borderBottomWidth: 8,
+                      borderBottomColor: "#57bdff",
+                    }}
+                    styleInput={{ height: 22 }}
                   />
                 </View>
                 {errors.user_lname && (
@@ -157,6 +170,11 @@ const SignUp = ({ navigation }) => {
                     value={values.user_email}
                     placeholder="Email"
                     keyboardType="Years in Business"
+                    styleBodyContent={{
+                      borderBottomWidth: 8,
+                      borderBottomColor: "#57bdff",
+                    }}
+                    styleInput={{ height: 22 }}
                   />
                 </View>
                 {errors.user_email && (
@@ -170,6 +188,11 @@ const SignUp = ({ navigation }) => {
                     value={values.user_phone}
                     placeholder="Phone number"
                     keyboardType="Years in Business"
+                    styleBodyContent={{
+                      borderBottomWidth: 8,
+                      borderBottomColor: "#57bdff",
+                    }}
+                    styleInput={{ height: 22 }}
                   />
                 </View>
                 {errors.user_phone && (
@@ -187,6 +210,11 @@ const SignUp = ({ navigation }) => {
                     autoCorrect={false}
                     secureTextEntry
                     enablesReturnKeyAutomatically
+                    styleBodyContent={{
+                      borderBottomWidth: 8,
+                      borderBottomColor: "#57bdff",
+                    }}
+                    styleInput={{ height: 22 }}
                   />
                 </View>
                 {errors.user_password && (
@@ -204,6 +232,11 @@ const SignUp = ({ navigation }) => {
                     autoCorrect={false}
                     secureTextEntry
                     enablesReturnKeyAutomatically
+                    styleBodyContent={{
+                      borderBottomWidth: 8,
+                      borderBottomColor: "#57bdff",
+                    }}
+                    styleInput={{ height: 22 }}
                   />
                 </View>
                 {errors.user_cpassword && (
@@ -243,7 +276,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    
   },
   companyLogo: {
     width: 100,
@@ -253,7 +285,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#d89d68",
-  //  marginRight: 70,
+    //  marginRight: 70,
     fontSize: 17,
     fontWeight: "400",
   },

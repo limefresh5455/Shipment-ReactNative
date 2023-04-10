@@ -9,9 +9,8 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-// import { AsyncStorage } from '@react-native-async-storage/async-storage';
-// import {AsyncStorage} from 'react-native';
 import AnimatedInput from "react-native-animated-input";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -27,7 +26,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const SignIn = ({ navigation }) => {
-  const handleSubmit = (values) => {
+  function handleSubmit(values) {
     const user = {
       user_email: values.user_email,
       user_password: values.user_password,
@@ -44,12 +43,14 @@ const SignIn = ({ navigation }) => {
       }
     )
       .then((response) => response.json())
-      .then((data) => {
+      .then(async(data) => {
         if (data.status === true) {
           alert(data.msg);
-          navigation.navigate("BusinessProfile");
-          // AsyncStorage.setItem('userdata', JSON.stringify(data.data.user_id));
-          //  AsyncStorage.setItem('userdata', 'dfdf');
+          navigation.navigate("ShipmentProgressStep");
+          await AsyncStorage.setItem(
+            "userData",
+            JSON.stringify(data.data.user_id)
+          );
         } else {
           alert(data.data.response);
         }
@@ -57,6 +58,14 @@ const SignIn = ({ navigation }) => {
       .catch((e) => {
         console.log("errors", e);
       });
+  }
+
+  const handleGoogle = () => {
+    Linking.openURL("https://shipwwt.com/");
+  };
+
+  const handleFacebook = () => {
+    alert("No Facebook Page Available !!!!");
   };
 
   return (
@@ -94,12 +103,18 @@ const SignIn = ({ navigation }) => {
             </View>
             <View style={styles.signUpLink}></View>
             <View style={styles.loginForm}>
+              <Text
+                style={styles.bp}
+                onPress={() => navigation.navigate("BusinessProfile")}
+              >
+                Business Profile
+              </Text>
               <View style={styles.contentView}>
                 <Text style={styles.title1}>Sign in to </Text>
                 <Text style={styles.title}>your</Text>
               </View>
               <Text style={styles.titles}>account</Text>
-              <View style={{ marginLeft: 14, marginTop: 15 }}>
+              <View style={{ marginLeft: 14, marginTop: 10 }}>
                 <AnimatedInput
                   style={styles.input}
                   onChangeText={handleChange("user_email")}
@@ -109,12 +124,13 @@ const SignIn = ({ navigation }) => {
                     borderBottomWidth: 8,
                     borderBottomColor: "#57bdff",
                   }}
+                  styleInput={{ height: 22 }}
                 />
               </View>
               {errors.user_email && (
                 <Text style={styles.errorTxt}>{errors.user_email}</Text>
               )}
-              <View style={{ marginLeft: 14, marginTop: 1 }}>
+              <View style={{ marginLeft: 14, marginTop: 10 }}>
                 <AnimatedInput
                   style={styles.input}
                   placeholder="Password"
@@ -128,6 +144,7 @@ const SignIn = ({ navigation }) => {
                     borderBottomWidth: 8,
                     borderBottomColor: "#57bdff",
                   }}
+                  styleInput={{ height: 22 }}
                 />
               </View>
               {errors.user_password && (
@@ -135,16 +152,16 @@ const SignIn = ({ navigation }) => {
               )}
               <Text style={styles.fgtPass}>Forget your password?</Text>
 
-              {/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                 <Text style={styles.btntext}>SIGN IN</Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate("BusinessProfile")}
               >
                 <Text style={styles.btntext}>SIGN IN</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             {/*<Text style={styles.heading1}>Or Continus with</Text>*/}
             <View
@@ -160,7 +177,7 @@ const SignIn = ({ navigation }) => {
                 style={{
                   height: 1,
                   backgroundColor: "black",
-                  marginLeft: 35,
+                  marginLeft: 1,
                   paddingRight: 120,
                 }}
               />
@@ -169,7 +186,7 @@ const SignIn = ({ navigation }) => {
                   style={{
                     textAlign: "center",
                     color: "#b1aeae",
-                    marginLeft: 10,
+                    marginLeft: 5,
                     marginRight: 10,
                   }}
                 >
@@ -181,19 +198,19 @@ const SignIn = ({ navigation }) => {
                   height: 1,
                   backgroundColor: "black",
                   paddingLeft: 120,
-                  //  paddinRight: 150,
+                  // paddinRight: 150,
                 }}
               />
             </View>
             <View style={styles.socialLogo}>
               <View style={styles.SquareShapeView}>
-                <Pressable onPress={() => navigation.navigate("ConfirmEmail")}>
+                <Pressable onPress={handleGoogle}>
                   <Icon name="google" size={40} color="#cc3333" />
                 </Pressable>
               </View>
 
               <View style={styles.SquareShapeView2}>
-                <Pressable onPress={() => navigation.navigate("ConfirmEmail")}>
+                <Pressable onPress={handleFacebook}>
                   <Icon name="facebook" size={40} color="#3c63e2" />
                 </Pressable>
               </View>
@@ -209,6 +226,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fbf1e6",
     padding: 9,
+  },
+  bp: {
+    color: "#cf9e63",
+    fontSize: 15,
+    textAlign: "left",
+    marginTop: -55,
+    marginBottom: 40,
+    marginLeft: 13,
   },
   title1: {
     fontSize: 28,
@@ -230,14 +255,14 @@ const styles = StyleSheet.create({
   header: {
     display: "flex",
     flexDirection: "row",
-    marginTop: 25,
+    marginTop: 18,
     padding: 18,
     marginRight: 10,
     justifyContent: "space-between",
     marginLeft: 5,
   },
   input: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 100,
     paddingLeft: 100,
     marginLeft: 150,
     marginRight: 20,
@@ -254,7 +279,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "right",
     marginBottom: 15,
-    marginRight: 12,
+    marginRight: -5,
     marginTop: 9,
   },
   logo: {
@@ -295,7 +320,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 18,
     // elevation: 3,
-    backgroundColor: "#cf9e63",
+    backgroundColor: "#CE9D62",
     marginTop: 28,
     marginLeft: 6,
     width: "100%",
