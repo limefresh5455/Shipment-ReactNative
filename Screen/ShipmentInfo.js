@@ -54,20 +54,20 @@ const ShipmentInfo = () => {
         </View>
       {/* </ScrollView> */}
     {/* <ScrollView > */}
-      <NavigationContainer>
+      {/* <NavigationContainer> */}
         <Tab.Navigator style={{minHeight:minHeight}} screenOptions={screenOptionStyle}>
           <Tab.Screen name="Ship From Details" component={SFD} listeners={{
           tabPress: e => {
-           setMinHeight(1075)
+           setMinHeight(1180)
           },
         }} />
           <Tab.Screen name="Ship To Information" component={STI} listeners={{
           tabPress: e => {
-           setMinHeight(1720)
+           setMinHeight(1190)
           },
         }} />
         </Tab.Navigator>
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
       {/* </ScrollView> */}
     {/* </SafeAreaView> */}
     </>
