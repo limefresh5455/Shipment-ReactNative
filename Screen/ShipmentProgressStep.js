@@ -133,7 +133,7 @@ export default function ShipmentProgressStep({ navigation }) {
             <Trial />
           </ProgressStep>
 
-          <ProgressStep
+          {/* <ProgressStep
             label="Shipment info"
             onNext={onNextStep}
             onPrevious={onPrevStep}
@@ -164,7 +164,7 @@ export default function ShipmentProgressStep({ navigation }) {
             <View style={{ alignItems: "center" }}>
               <DownloadShipment />
             </View>
-          </ProgressStep>
+          </ProgressStep> */}
         </ProgressSteps>
       </ScrollView>
     </>

@@ -11,145 +11,68 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Platform,
+  Modal,
 } from "react-native";
-import Slideshow from "react-native-image-slider-show";
+// import Slideshow from "react-native-image-slider-show";
 import React, { useState, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { Card } from "react-native-shadow-cards";
-import AnimatedInput from "react-native-animated-input";
-import DatePicker from "react-native-datepicker";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import Carousel from "react-native-snap-carousel";
-import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from "./CarouselCardItem";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const data = [
-  {
-    imgUrl:
-      "https://www.axisbank.com/images/default-source/default-album/ace-credit-card.jpg",
-  },
-  {
-    imgUrl:
-      "https://1.bp.blogspot.com/-vbR02D5OHjs/XTxr17QOLaI/AAAAAAAAARE/11BvbYw9ZI84U-Jwjs2Z29Z3aWLwgNp7wCLcBGAs/s1600/Axis%2BBank%2BRewards%2BPlus.jpg",
-  },
-];
+// import Icon from "react-native-vector-icons/FontAwesome";
+// import { Card } from "react-native-shadow-cards";
+// import AnimatedInput from "react-native-animated-input";
+// import { Formik } from "formik";
+// import * as Yup from "yup";
+// import Carousel from "react-native-snap-carousel";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import DatePicker from "react-native-modern-datepicker";
+// import moment from "moment";
 
 const Trial = () => {
-  const [selectedValue, setSelectedValue] = useState();
-  const [serviceDetails, setserviceDetails] = useState([]);
+  //----- DatePicker -----//
+  const [show, setShow] = useState(false);
+  //----- DatePicker -----//
+
   const [selectedValue1, setSelectedValue1] = useState();
-  const [packagingDetails, setpackagingDetails] = useState([]);
+  // const [packagingDetails, setpackagingDetails] = useState([]);
+  const [objectId, setObjectId] = useState([]);
   const [weight, setWeight] = useState("");
   const [mass, setMass] = useState("");
   const [deliveryConfirmation, setDeliveryConfirmation] = useState("");
   const [position, setPosition] = useState(0);
   const [formData, setFormData] = useState({
-    service: "",
     packaging: "",
     weight: "",
     mass: "",
+    date: "",
     item: "",
     signature: "",
-    USdollar: "",
+    USdollar: "1.00",
   });
 
-  const handleWeightChange = (weight) =>{
-      setFormData({ ...formData, weight });
-  }
+  // AsyncStorage.setItem("objectid", JSON.stringify(objectId));
 
-  const handleItemChange = (item) =>{
-      setFormData({ ...formData, item });
-  }
+  //--------- DatePicker -----//
+  const handlePress = () => {
+    setShow(!show);
+  };
+  const handleDate = (date) => {
+    setFormData({ ...formData, date });
+    setShow(false);
+  };
+  //----- DatePicker -----//
 
-  const handleUSdollarChange = (USdollar) =>{
-      setFormData({ ...formData, USdollar });
-  }
-
-  //console.log("formData",formData);
-   
-     
-   
-  const handlePress = (value) => {
-    // console.log(value)
-    fetch(
-      "https://api.goshippo.com/carrier_accounts/?carrier=" +
-        value +
-        "&service_levels=1",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "ShippoToken shippo_test_385ed1b28f50d525d8b9088ac3cbaed1bc9b8ff2",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setserviceDetails(data.results[0].service_levels);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
-    fetch("https://api.goshippo.com/parcel-templates?carrier=" + value, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "ShippoToken shippo_test_385ed1b28f50d525d8b9088ac3cbaed1bc9b8ff2",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("data", data.results);
-        setpackagingDetails(data.results);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  const handleWeightChange = (weight) => {
+    setFormData({ ...formData, weight });
   };
 
-
-  const serviceList = () => {
-    // console.log(serviceDetails)
-    return serviceDetails.map((service) => {
-      return <Picker.Item label={service.name} value={service.name} />;
-    });
+  const handleItemChange = (item) => {
+    setFormData({ ...formData, item });
   };
-
-  const packageList = () => {
-    // console.log("asddjfdjfd")
-    return packagingDetails.map((service) => {
-      return <Picker.Item label={service.name} value={service.name} />;
-    });
-  };
-
-
-  
-
-
-  const fieldData = () =>{
-    AsyncStorage.setItem('user',JSON.stringify(formData)); 
-    console.log("formdata",formData);
-  }
-
-   
 
   useEffect(() => {
-
-      fieldData()
-
-    const toggle = setInterval(() => {
-      setPosition(position === data.length - 1 ? 0 : position + 1);
-    }, 3000);
-
-    return () => clearInterval(toggle);
-  });
-
-  const isCarousel = React.useRef(null);
+    AsyncStorage.setItem("user", JSON.stringify(formData));
+    // console.log("formdata1", formData);
+  }, [formData]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -159,138 +82,164 @@ const Trial = () => {
             <Text style={styles.formTitleh1}>Package info</Text>
           </View>
 
-          <View style={styles.flex}>
-            <TouchableOpacity
-              onPress={() => handlePress("usps")}
-              style={{
-                borderBottomWidth: 1,
-                borderRightWidth: 1,
-                borderTopWidth: 1,
-                borderLeftWidth: 1,
-                borderRadius: 9,
-              }}
-            >
-              <Card style={styles.cards}>
-                <View style={styles.card}>
-                  <Image
-                    source={require("../assets/img/ups.png")}
-                    style={styles.img}
-                  />
-                  <Text style={styles.text}>USPS</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => handlePress("ups")}
-              style={{
-                borderColor: "black",
-                borderBottomWidth: 1,
-                borderRightWidth: 1,
-                borderTopWidth: 1,
-                borderLeftWidth: 1,
-                borderRadius: 9,
-              }}
-            >
-              <Card style={styles.cards}>
-                <View style={styles.card}>
-                  <Image
-                    source={require("../assets/img/ups.png")}
-                    style={styles.img}
-                  />
-                  <Text style={styles.text}>UPS</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => handlePress("fedex")}
-              style={{
-                borderColor: "black",
-                borderBottomWidth: 1,
-                borderRightWidth: 1,
-                borderTopWidth: 1,
-                borderLeftWidth: 1,
-                borderRadius: 9,
-              }}
-            >
-              <Card style={styles.cards}>
-                <View style={styles.card}>
-                  <Image
-                    source={require("../assets/img/ups.png")}
-                    style={styles.img}
-                  />
-                  <Text style={styles.text}>FedEx</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
-          </View>
-
           <View>
-            <Text style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}>
-              Service Type
-            </Text>
-            <Picker
-              selectedValue={selectedValue}
-              onValueChange={(itemValue, itemIndex) => {
-                setSelectedValue(itemValue);
-                console.log("serviceValue", itemValue);
-                setFormData({ ...formData, service:itemValue });
-              }}
-              style={{ marginLeft: 8, borderColor: "black" }}
-              value={formData.service}
-            >
-              <Picker.Item label="Select Service type" value="" />
-              {serviceList()}
-            </Picker>
-            <Text style={styles.inputs}></Text>
-
             <Text style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}>
               Packaging
             </Text>
             <Picker
               selectedValue={selectedValue1}
               onValueChange={(itemValue, itemIndex) => {
-                setSelectedValue1(itemValue)
-                setFormData({ ...formData, packaging:itemValue });
-            }
-              }
+                setSelectedValue1(itemValue, itemIndex);
+                setFormData({ ...formData, packaging: itemValue });
+              }}
               style={{ marginLeft: 8, borderColor: "black" }}
               value={formData.packaging}
             >
               <Picker.Item label="Select Packaging" value="" />
-              {packageList()}
+              <Picker.Item
+                label="Customer Packaging, FedEx Express® Services"
+                value="YOUR_PACKAGING"
+              />
+              <Picker.Item
+                label="Customer Packaging, FedEx Ground® Economy (Formerly known as FedEx SmartPost®) Services"
+                value="YOUR_PACKAGING"
+              />
+              <Picker.Item label="FedEx® Envelope" value="FEDEX_ENVELOPE" />
+              <Picker.Item label="FedEx® Box" value="FEDEX_BOX" />
+              <Picker.Item label="FedEx® Small Box" value="FEDEX_SMALL_BOX" />
+              <Picker.Item label="FedEx® Medium Box" value="FEDEX_MEDIUM_BOX" />
+              <Picker.Item label="FedEx® Large Box" value="FEDEX_LARGE_BOX" />
+              <Picker.Item
+                label="FedEx® Extra Large Box"
+                value="FEDEX_EXTRA_LARGE_BOX"
+              />
+              <Picker.Item label="FedEx® 10kg Box" value="FEDEX_10KG_BOX" />
+              <Picker.Item label="FedEx® 25kg Box" value="FEDEX_25KG_BOX" />
+              <Picker.Item label="FedEx® Pak" value="FEDEX_PAK" />
+              <Picker.Item label="FedEx® Tube" value="FEDEX_TUBE" />
             </Picker>
             <Text style={styles.inputs}></Text>
 
-            <TextInput
-              style={styles.input1}
-              placeholder="Avg. weight"
-              keyboardType="numeric"
-              onChangeText={handleWeightChange}
-              value={formData.weight}
-            />
-            <Picker
-              selectedValue={mass}
-              onValueChange={(itemValue, itemIndex) => 
-                {
-                    setMass(itemValue)
-                    setFormData({ ...formData, mass:itemValue });
-                }}
-              style={{
-                marginLeft: 8,
-                borderColor: "black",
-                marginBottom: 25,
-                marginTop: -25,
-              }}
-              value={formData.mass}
+            <View
+              style={{ display: "flex", flexDirection: "row", marginTop: -10 }}
             >
-              <Picker.Item label="Select Mass Unit" value="" />
-              <Picker.Item label="lb" value="lb" />
-              <Picker.Item label="oz" value="oz" />
-              <Picker.Item label="g" value="g" />
-              <Picker.Item label="kg" value="kg" />
-            </Picker>
+              <TextInput
+                style={styles.input1}
+                placeholder="Avg. weight"
+                keyboardType="numeric"
+                onChangeText={handleWeightChange}
+                value={formData.weight}
+              />
+              <Picker
+                selectedValue={mass}
+                onValueChange={(itemValue, itemIndex) => {
+                  setMass(itemValue);
+                  setFormData({ ...formData, mass: itemValue });
+                }}
+                style={{
+                  marginLeft: -160,
+                  borderColor: "black",
+                  borderTopWidth: 1,
+                  marginBottom: 25,
+                  marginTop: 23,
+                  width: 200,
+                }}
+                value={formData.mass}
+              >
+                <Picker.Item label="Select Mass Unit" value="" />
+                <Picker.Item label="lb" value="LB" />
+                <Picker.Item label="oz" value="OZ" />
+                <Picker.Item label="g" value="G" />
+                <Picker.Item label="kg" value="KG" />
+              </Picker>
+            </View>
+
+            <View
+              style={{
+                marginLeft: 13,
+                marginRight: 14,
+                marginBottom: 30,
+                marginTop: -10,
+              }}
+            >
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                <TouchableOpacity
+                  style={{
+                    borderColor: "#32302e7a",
+                    borderLeftWidth: 1,
+                    borderRightWidth: 1,
+                    borderTopWidth: 1,
+                    borderBottomWidth: 1,
+                    marginTop: 10,
+                    padding: 8,
+                    width: 140,
+                  }}
+                  onPress={handlePress}
+                >
+                  <Text
+                    style={{
+                      color: "black",
+                      textAlign: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    DatePicker
+                  </Text>
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    borderColor: "#32302e7a",
+                    borderLeftWidth: 1,
+                    borderRightWidth: 1,
+                    borderTopWidth: 1,
+                    borderBottomWidth: 1,
+                    marginTop: 10,
+                    marginLeft: 25,
+                    padding: 8,
+                    width: 140,
+                  }}
+                >
+                  {formData.date}
+                </Text>
+              </View>
+              {show && (
+                <DatePicker
+                  mode="calendar"
+                  format="YYYY-MM-DD"
+                  onSelectedChange={(date) => handleDate(date)}
+                  value={formData.selectedDate}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: 10,
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                  }}
+                  textStyle={{
+                    fontSize: 16,
+                    color: "#333333",
+                  }}
+                  selectedTextStyle={{
+                    fontWeight: "bold",
+                  }}
+                  selectedDayColor="#00BFFF"
+                  selectedDayTextColor="#FFFFFF"
+                  todayBackgroundColor="#F5F5F5"
+                  todayTextStyle={{
+                    fontWeight: "bold",
+                    color: "#333333",
+                  }}
+                />
+              )}
+            </View>
 
             <Text
               style={{
@@ -314,62 +263,19 @@ const Trial = () => {
             </Text>
             <Picker
               selectedValue={deliveryConfirmation}
-              onValueChange={(itemValue, itemIndex) =>{
-                   setDeliveryConfirmation(itemValue)
-                   setFormData({ ...formData, signature:itemValue });
-              }
-              }
+              onValueChange={(itemValue, itemIndex) => {
+                setDeliveryConfirmation(itemValue);
+                setFormData({ ...formData, signature: itemValue });
+              }}
               style={{ marginLeft: 8, borderColor: "black" }}
               value={formData.signature}
             >
               <Picker.Item label="Select No. of packages" value="" />
-              <Picker.Item
-                label="Signature required"
-                value="Signature required"
-              />
-              <Picker.Item label="Demo" value="Demo" />
+              <Picker.Item label="No signature" value="No signature" />
+              <Picker.Item label="Direct signature" value="Direct signature" />
+              <Picker.Item label="Adult signature" value="Adult signature" />
             </Picker>
             <Text style={styles.inputs}></Text>
-
-            <Text
-              style={{
-                marginTop: 20,
-                marginLeft: 18,
-                marginBottom: -10,
-                color: "#8d9092",
-              }}
-            >
-              Insured value of package
-            </Text>
-            <TextInput
-              style={styles.input}
-              placeholder="$ 1.00"
-              keyboardType="numeric"
-              onChangeText={handleUSdollarChange}
-              value={formData.USdollar}
-            />
-
-            <View style={styles.flex}>
-              <Text style={{ fontSize: 20 }}>Amount pay from</Text>
-              <Text style={{ fontSize: 17, marginTop: 5, color: "#e3b993" }}>
-                Add New
-              </Text>
-            </View>
-
-            <View style={styles.slide}>
-              <Carousel
-                layout="default"
-                layoutCardOffset={9}
-                ref={isCarousel}
-                data={data}
-                renderItem={CarouselCardItem}
-                sliderWidth={340}
-                itemWidth={330}
-                inactiveSlideShift={0}
-                useScrollView={true}
-                style={{ position: "absolute" }}
-              />
-            </View>
           </View>
         </View>
       </ScrollView>
@@ -402,7 +308,6 @@ const styles = StyleSheet.create({
     borderRightWidth: 0,
     borderLeftWidth: 0,
     marginTop: -48,
-
     borderBottomColor: "#c7bdbd",
   },
 
@@ -437,15 +342,19 @@ const styles = StyleSheet.create({
     margin: 12,
     padding: 10,
     marginBottom: 20,
-    borderStyle: "solid",
+    // borderStyle: "#6B6969",
     borderBottomColor: "#6B6969",
     borderWidth: 1,
     borderTopWidth: 1,
     borderRightWidth: 1,
     borderLeftWidth: 1,
-    marginLeft: 14,
-    marginRight: 13,
+    marginLeft: 16,
+    marginRight: 150,
     marginTop: 28,
+    borderColor: "#6B6969",
+    width: 135,
+    justifyContent: "center",
+    textAlign: "center",
   },
 
   businessForm: {
