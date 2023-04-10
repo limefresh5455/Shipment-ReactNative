@@ -10,32 +10,98 @@ import {
   SafeAreaView,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import Slideshow from "react-native-image-slider-show";
 import React, { useState, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/FontAwesome";
-// import {  Text, View } from 'react-native';
-// import Carousel from 'react-native-reanimated-carousel';
 import { Card } from "react-native-shadow-cards";
 import AnimatedInput from "react-native-animated-input";
-import Header from "./Header";
-// import { Avatar, Button, Card, Text } from 'react-native-paper';
+import DatePicker from "react-native-datepicker";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import Carousel from "react-native-snap-carousel";
+import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from "./CarouselCardItem";
 
 const data = [
   {
-    title: "Credit Card",
-    url: "https://www.sbicard.com/sbi-card-en/assets/media/images/personal/credit-cards/value-savings/card-faces/simplyclick-card-face.webp",
+    imgUrl:
+      "https://www.axisbank.com/images/default-source/default-album/ace-credit-card.jpg",
   },
   {
-    title: "Credit Card",
-    url: "https://www.sbicard.com/sbi-card-en/assets/media/images/personal/credit-cards/value-savings/card-faces/simplyclick-card-face.webp",
+    imgUrl:
+      "https://1.bp.blogspot.com/-vbR02D5OHjs/XTxr17QOLaI/AAAAAAAAARE/11BvbYw9ZI84U-Jwjs2Z29Z3aWLwgNp7wCLcBGAs/s1600/Axis%2BBank%2BRewards%2BPlus.jpg",
   },
 ];
 
-const CreateShipment = ({ navigation }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
+const CreateShipment = () => {
+
+
+
+  const [deliveryConfirmation, setDeliveryConfirmation] = useState("");
   const [position, setPosition] = useState(0);
+  const [serviceDetails, setserviceDetails] = useState([]);
+  const [selectedValue, setSelectedValue] = useState();
+  const [packagingDetails, setpackagingDetails] = useState([]);
+  const [selectedValue1, setSelectedValue1] = useState();
+  const [weight, setWeight] = useState("");
+  const [mass, setMass] = useState("");
+
+  const handlePress = (value) => {
+    // console.log(value)
+    fetch(
+      "https://api.goshippo.com/carrier_accounts/?carrier=" +
+        value +
+        "&service_levels=1",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "ShippoToken shippo_test_385ed1b28f50d525d8b9088ac3cbaed1bc9b8ff2",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setserviceDetails(data.results[0].service_levels);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+    fetch("https://api.goshippo.com/parcel-templates?carrier=" + value, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "ShippoToken shippo_test_385ed1b28f50d525d8b9088ac3cbaed1bc9b8ff2",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data", data.results);
+        setpackagingDetails(data.results);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const serviceList = () => {
+    // console.log(serviceDetails)
+    return serviceDetails.map((service) => {
+      return <Picker.Item label={service.name} value={service.name} />;
+    });
+  };
+
+  const packageList = () => {
+    // console.log("asddjfdjfd")
+    return packagingDetails.map((service) => {
+      return <Picker.Item label={service.name} value={service.name} />;
+    });
+  };
 
   useEffect(() => {
     const toggle = setInterval(() => {
@@ -45,160 +111,148 @@ const CreateShipment = ({ navigation }) => {
     return () => clearInterval(toggle);
   });
 
-  // const width = Dimensions.get('window').width;
+  const handleSubmit = (values) => {
+    console.log("values", values);
+  };
+
+  const isCarousel = React.useRef(null);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} />
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.contentView}>
-          <Text style={styles.h1}>Create a new</Text>
-          <Text style={styles.h1m}> shipment</Text>
-        </View>
-        <View style={styles.businessForm}>
-          <View style={styles.iconAligen}>
-            <View
-              style={{
-                flex: 1,
-                width: 5,
-                height: 2,
-                backgroundColor: "#cf9e63",
-                marginTop: 25,
-                marginRight: -30,
-                marginLeft: 5,
-              }}
-            />
-            <Icon name="circle" size={45} color="#cf9e63" s />
-
-            <View
-              style={{
-                flex: 1,
-                height: 2,
-                backgroundColor: "#cf9e63",
-                marginTop: 25,
-              }}
-            />
-            <Icon name="circle" size={45} color="#b1aeae" s />
-            <View
-              style={{
-                flex: 1,
-                height: 2,
-                backgroundColor: "#b1aeae",
-                marginTop: 25,
-                paddingRight: -20,
-              }}
-            />
-            <Icon name="circle" size={45} color="#b1aeae" s />
-            <View
-              style={{
-                flex: 1,
-                height: 2,
-                backgroundColor: "#b1aeae",
-                marginTop: 25,
-                marginRight: 20,
-              }}
-            />
-          </View>
-          <View style={styles.labelHead}>
-            <Text
-              style={{
-                // marginTop: 5,
-                color: "#cf9e63",
-              }}
-            >
-              Package & {"\n"}Payments {"\n"} Info
-            </Text>
-
-            <Text
-              style={{
-                paddingRight: 38,
-                color: "#b1aeae",
-              }}
-            >
-              shipment{"\n"} Info
-            </Text>
-            <Text
-              style={{
-                paddingRight: 70,
-                color: "#b1aeae",
-              }}
-            >
-              Done
-            </Text>
-          </View>
-          <View style={styles.formTitle}>
-            <Text style={styles.formTitleh1}>Package info</Text>
-          </View>
-
-          <View style={styles.flex}>
-            <Card style={styles.cards}>
-              <View style={styles.card}>
-                <Image
-                  source={require("../assets/img/ups.png")}
-                  style={styles.img}
-                />
-                <Text style={styles.text}>USPS</Text>
+    <Formik
+      initialValues={{
+        service: selectedValue,
+        packaging: selectedValue1,
+        weight: "",
+        mass: mass,
+        item: "",
+        signature: deliveryConfirmation,
+        USdollar: "",
+      }}
+      onSubmit={handleSubmit}
+      enableReinitialize={true}
+    >
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        setFieldTouched,
+        handleSubmit,
+      }) => (
+        <SafeAreaView style={styles.container}>
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.businessForm}>
+              <View style={styles.formTitle}>
+                <Text style={styles.formTitleh1}>Package info</Text>
               </View>
-            </Card>
 
-            <Card style={styles.cards}>
-              <View style={styles.card}>
-                <Image
-                  source={require("../assets/img/ups.png")}
-                  style={styles.img}
-                />
-                <Text style={styles.text}>UPS</Text>
+              <View style={styles.flex}>
+                <TouchableOpacity
+                  onPress={() => handlePress("usps")}
+                  style={{
+                    borderBottomWidth: 1,
+                    borderRightWidth: 1,
+                    borderTopWidth: 1,
+                    borderLeftWidth: 1,
+                    borderRadius: 9,
+                  }}
+                >
+                  <Card style={styles.cards}>
+                    <View style={styles.card}>
+                      <Image
+                        source={require("../assets/img/ups.png")}
+                        style={styles.img}
+                      />
+                      <Text style={styles.text}>USPS</Text>
+                    </View>
+                  </Card>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => handlePress("ups")}
+                  style={{
+                    borderColor: "black",
+                    borderBottomWidth: 1,
+                    borderRightWidth: 1,
+                    borderTopWidth: 1,
+                    borderLeftWidth: 1,
+                    borderRadius: 9,
+                  }}
+                >
+                  <Card style={styles.cards}>
+                    <View style={styles.card}>
+                      <Image
+                        source={require("../assets/img/ups.png")}
+                        style={styles.img}
+                      />
+                      <Text style={styles.text}>UPS</Text>
+                    </View>
+                  </Card>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => handlePress("fedex")}
+                  style={{
+                    borderColor: "black",
+                    borderBottomWidth: 1,
+                    borderRightWidth: 1,
+                    borderTopWidth: 1,
+                    borderLeftWidth: 1,
+                    borderRadius: 9,
+                  }}
+                >
+                  <Card style={styles.cards}>
+                    <View style={styles.card}>
+                      <Image
+                        source={require("../assets/img/ups.png")}
+                        style={styles.img}
+                      />
+                      <Text style={styles.text}>FedEx</Text>
+                    </View>
+                  </Card>
+                </TouchableOpacity>
               </View>
-            </Card>
 
-            <Card style={styles.cards}>
-              <View style={styles.card}>
-                <Image
-                  source={require("../assets/img/ups.png")}
-                  style={styles.img}
-                />
-                <Text style={styles.text}>FedEx</Text>
-              </View>
-            </Card>
-          </View>
+              <View>
+                <Text
+                  style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}
+                >
+                  Service Type
+                </Text>
+                <Picker
+                  selectedValue={selectedValue}
+                  onValueChange={(itemValue, itemIndex) => {
+                    setSelectedValue(itemValue);
+                    console.log("serviceValue", itemValue);
+                  }}
+                  style={{ marginLeft: 8, borderColor: "black" }}
+                  value={values.service}
+                >
+                  <Picker.Item label="Select Service type" value="" />
+                  {serviceList()}
+                </Picker>
+                <Text style={styles.inputs}></Text>
 
-          <View>
-            <Text style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}>
-              Service Type
-            </Text>
-            <Picker
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }
-              style={{ marginLeft: 8, borderColor: "black" }}
-            >
-              <Picker.Item label="Select Service type" value="" />
-              <Picker.Item label="FedEx Priority" value="FedEx Priority" />
-              <Picker.Item label="FedEx Standard" value="FedEx Standard" />
-            </Picker>
-            <Text style={styles.inputs}></Text>
+                <Text
+                  style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}
+                >
+                  Packaging
+                </Text>
+                <Picker
+                  selectedValue={selectedValue1}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setSelectedValue1(itemValue)
+                  }
+                  style={{ marginLeft: 8, borderColor: "black" }}
+                  onChangeText={handleChange("packaging")}
+                  value={values.packaging}
+                >
+                  <Picker.Item label="Select Packaging" value="" />
+                  {packageList()}
+                </Picker>
+                <Text style={styles.inputs}></Text>
 
-            <Text style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}>
-              Packaging
-            </Text>
-            <Picker
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }
-              style={{ marginLeft: 8, borderColor: "black" }}
-            >
-              <Picker.Item label="Select Packaging" value="" />
-              <Picker.Item label="FedEx Demo" value="FedEx Priority" />
-              <Picker.Item label="FedEx Demo" value="FedEx Standard" />
-              <Picker.Item label="FedEx Demo" value="FedEx Priority" />
-              <Picker.Item label="FedEx Demo" value="FedEx Standard" />
-              <Picker.Item label="FedEx Box" value="FedEx Standard" />
-            </Picker>
-            <Text style={styles.inputs}></Text>
-
-            <Text style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}>
+                {/* <Text style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}>
               Number of Package
             </Text>
             <Picker
@@ -212,100 +266,146 @@ const CreateShipment = ({ navigation }) => {
               <Picker.Item label="Single" value="FedEx Priority" />
               <Picker.Item label="Multi" value="FedEx Standard" />
             </Picker>
-            <Text style={styles.inputs}></Text>
+            <Text style={styles.inputs}></Text> */}
 
-            <AnimatedInput
-              style={styles.input}
-              placeholder="Avg. weight"
-              keyboardType="Years in Business"
-              styleBodyContent={{
-                borderBottomWidth: 8,
-                borderBottomColor: "#57bdff",
-              }}
-            />
-
-            <AnimatedInput
-              style={styles.input}
-              placeholder="Ship date"
-              keyboardType="Years in Business"
-              styleBodyContent={{
-                borderBottomWidth: 8,
-                borderBottomColor: "#57bdff",
-              }}
-            />
-
-            <AnimatedInput
-              style={styles.input}
-              placeholder="Reference"
-              keyboardType="Years in Business"
-              styleBodyContent={{
-                borderBottomWidth: 8,
-                borderBottomColor: "#57bdff",
-              }}
-            />
-
-            <Text style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}>
-              Address Book
-            </Text>
-            <Picker
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }
-              style={{ marginLeft: 8, borderColor: "black" }}
-            >
-              <Picker.Item label="Select No. of packages" value="" />
-              <Picker.Item label="Single" value="FedEx Priority" />
-              <Picker.Item label="Multi" value="FedEx Standard" />
-            </Picker>
-            <Text style={styles.inputs}></Text>
-
-            <AnimatedInput
-              style={styles.input}
-              placeholder="Insured value of package"
-              keyboardType="Years in Business"
-              styleBodyContent={{
-                borderBottomWidth: 8,
-                borderBottomColor: "#57bdff",
-              }}
-            />
-
-            <View style={styles.flex}>
-              <Text style={{ fontSize: 20 }}>Amount pay from</Text>
-              <Text style={{ fontSize: 17, marginTop: 5, color: "#e3b993" }}>
-                Add New
-              </Text>
-            </View>
-
-            <View style={styles.flex}>
-              <View style={styles.slide}>
-                <Slideshow
-                  position={position}
-                  dataSource={data}
-                  style={styles.imagess}
+                <TextInput
+                  style={styles.input1}
+                  placeholder="Avg. weight"
+                  keyboardType="numeric"
+                  onChangeText={handleChange("weight")}
+                  value={values.weight}
                 />
+                <Picker
+                  selectedValue={mass}
+                  onValueChange={(itemValue, itemIndex) => setMass(itemValue)}
+                  style={{
+                    marginLeft: 8,
+                    borderColor: "black",
+                    marginBottom: 25,
+                    marginTop: -25,
+                  }}
+                  onChangeText={handleChange("mass")}
+                  value={values.mass}
+                >
+                  <Picker.Item label="Select Mass Unit" value="" />
+                  <Picker.Item label="lb" value="lb" />
+                  <Picker.Item label="oz" value="oz" />
+                  <Picker.Item label="g" value="g" />
+                  <Picker.Item label="kg" value="kg" />
+                </Picker>
+
+                {/* <DatePicker
+              defaultDate={new Date(2018, 4, 4)}
+              minimumDate={new Date(2018, 1, 1)}
+              maximumDate={new Date(2018, 12, 31)}
+              locale={"en"}
+              timeZoneOffsetInMinutes={undefined}
+              modalTransparent={false}
+              animationType={"fade"}
+              androidMode={"default"}
+              placeHolderText="Select date"
+              textStyle={{ color: "green" }}
+              style={{
+                marginLeft: 16,
+                borderBottomColor: "#c7bdbd",
+                borderWidth: 1,
+                borderStyle: "solid",
+              }}
+              placeHolderTextStyle={{ color: "#d3d3d3" }}
+              // onDateChange={(date) => setDate(date)}
+              disabled={false}
+            /> */}
+
+                <Text
+                  style={{
+                    marginLeft: 18,
+                    marginBottom: -10,
+                    color: "#8d9092",
+                  }}
+                >
+                  Reference(Will not show on label)
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Item Description"
+                  keyboardType="Years in Business"
+                  onChangeText={handleChange("item")}
+                  value={values.item}
+                />
+
+                <Text
+                  style={{ marginLeft: 16, marginTop: 20, color: "#8d9092" }}
+                >
+                  Delivery confirmation
+                </Text>
+                <Picker
+                  selectedValue={deliveryConfirmation}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setDeliveryConfirmation(itemValue)
+                  }
+                  style={{ marginLeft: 8, borderColor: "black" }}
+                  onChangeText={handleChange("signature")}
+                  value={values.signature}
+                >
+                  <Picker.Item label="Select No. of packages" value="" />
+                  <Picker.Item
+                    label="Signature required"
+                    value="Signature required"
+                  />
+                  <Picker.Item label="Demo" value="Demo" />
+                </Picker>
+                <Text style={styles.inputs}></Text>
+
+                <Text
+                  style={{
+                    marginTop: 20,
+                    marginLeft: 18,
+                    marginBottom: -10,
+                    color: "#8d9092",
+                  }}
+                >
+                  Insured value of package
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="$ 1.00"
+                  keyboardType="numeric"
+                  onChangeText={handleChange("USdollar")}
+                  value={values.USdollar}
+                />
+
+                <View style={styles.flex}>
+                  <Text style={{ fontSize: 20 }}>Amount pay from</Text>
+                  <Text
+                    style={{ fontSize: 17, marginTop: 5, color: "#e3b993" }}
+                  >
+                    Add New
+                  </Text>
+                </View>
+
+                <View style={styles.slide}>
+                  <Carousel
+                    layout="default"
+                    layoutCardOffset={9}
+                    ref={isCarousel}
+                    data={data}
+                    renderItem={CarouselCardItem}
+                    sliderWidth={340}
+                    itemWidth={330}
+                    inactiveSlideShift={0}
+                    useScrollView={true}
+                    style={{ position: "absolute" }}
+                  />
+                </View>
               </View>
             </View>
-          </View>
-
-          <View style={styles.flex}>
-            <Pressable
-              style={styles.button}
-              // onPress={() => navigation.navigate("ShipmentInfo")}
-            >
-              <Text style={styles.btntext1}>Cancel</Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.button1}
-              onPress={() => navigation.navigate("ShipmentInfo")}
-            >
-              <Text style={styles.btntext}>Continue</Text>
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            <TouchableOpacity style={{marginLeft:17, marginTop:-20}} onPress={handleSubmit}>
+              <Text style={{fontSize:20}}>SIGN IN</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </SafeAreaView>
+      )}
+    </Formik>
   );
 };
 const styles = StyleSheet.create({
@@ -313,16 +413,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+
   header: {
     display: "flex",
     flexDirection: "row",
     marginTop: 5,
-    // marginHorizontal: 90,
     paddingLeft: 20,
     justifyContent: "space-between",
     paddingLeft: -60,
     borderRadius: 10,
+    paddingRight: 15,
   },
+
   inputs: {
     height: 40,
     margin: 12,
@@ -332,39 +434,21 @@ const styles = StyleSheet.create({
     borderRightWidth: 0,
     borderLeftWidth: 0,
     marginTop: -48,
-    borderStyle: "solid",
+
     borderBottomColor: "#c7bdbd",
-    
   },
+
   companyLogo: {
     width: 100,
     height: 60,
     resizeMode: "contain",
-    // paddingLeft:20
   },
+
   scrollView: {
-    // marginHorizontal: 20,
-    marginTop: 110,
+    marginTop: -30,
     padding: 10,
   },
-  h1: {
-    fontSize: 30,
-    marginBottom: 28,
-    color: "#b1aeae",
-    fontWeight: "400",
-  },
-  h1m: {
-    fontSize: 30,
-    marginBottom: 28,
-    fontWeight: "400",
-    // lineHeight: 1.15
-  },
-  contentView: {
-    paddingTop: 30,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
+
   input: {
     height: 40,
     margin: 12,
@@ -376,67 +460,36 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderStyle: "solid",
     borderBottomColor: "#6B6969",
-    marginLeft: 40,
-    marginRight: 20,
+    marginLeft: 14,
+    marginRight: 13,
   },
+
+  input1: {
+    height: 40,
+    margin: 12,
+    padding: 10,
+    marginBottom: 20,
+    borderStyle: "solid",
+    borderBottomColor: "#6B6969",
+    borderWidth: 1,
+    borderTopWidth: 1,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    marginLeft: 14,
+    marginRight: 13,
+    marginTop: 28,
+  },
+
   businessForm: {
     backgroundColor: "white",
     borderRadius: 10,
     paddingBottom: 26,
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    // elevation: 3,
-    borderRadius: 1,
-    borderWidth: 1,
-    borderColor: "#c97e3b",
-    marginTop: 28,
-    width: 100,
-    height: 50,
-    textAlign: "center",
-  },
-  button1: {
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 3,
-    backgroundColor: "#cf9e63",
-    marginTop: 28,
-    width: 100,
-    height: 50,
-    textAlign: "center",
-  },
-
-  btntext1: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "#cf9e63",
-    width: 100,
-    height: 50,
-    textAlign: "center",
-    paddingTop: 15,
-  },
-
-  btntext: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-    width: 100,
-    height: 50,
-    textAlign: "center",
-    paddingTop: 15,
   },
 
   flex: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    // marginLeft: 15,
-    // marginRight: 15,
     justifyContent: "space-between",
     margin: 20,
   },
@@ -478,12 +531,12 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     paddingLeft: 15,
   },
+
   formTitleh1: {
     fontSize: 30,
-    // marginBottom: ,
-    // color: "#cf9e63",
     fontWeight: "500",
   },
+
   formTitleh2: {
     fontSize: 25,
     marginBottom: 28,
@@ -491,21 +544,24 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     paddingLeft: 55,
   },
+
   iconAligen: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 25,
   },
+
   label: {
     paddingLeft: 10,
     color: "gray",
     textAlign: "left",
   },
+
   labelHead: {
     flexDirection: "row",
     justifyContent: "space-around",
-    // marginBottom:10
   },
+
   SquareShapeView: {
     marginTop: 20,
     width: 380,
@@ -514,22 +570,16 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: "#FFFFFF",
     backgroundColor: "rgb(255,250,240)",
-    // paddingLeft:20,
   },
+
   imagess: {
     justifyContent: "space-between",
   },
+
   slide: {
     justifyContent: "space-between",
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 25,
-    paddingRight: 15,
-    justifyContent: "space-between",
-    paddingLeft: -65,
-  },
+
 });
 
 export default CreateShipment;
