@@ -117,7 +117,30 @@ export default function ShipmentProgressStep({ navigation }) {
   };
 
   //--- Get Token Post Rates API ---//
-  
+  useEffect(() => {
+    const formData = new URLSearchParams();
+    formData.append("grant_type", "client_credentials");
+    formData.append("client_id", "l7cedb873968594ca0b36b370575801843");
+    formData.append("client_secret", "d64a4e7b41f34c64aa11e51a9a91e415");
+    formData.append("child_Key", "WWTGlobal");
+    formData.append("child_secret", "d64a4e7b41f34c64aa11e51a9a91e415");
+
+    fetch("https://apis-sandbox.fedex.com/oauth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: formData.toString(),
+    })
+      .then((response) => response.json())
+      .then(async (data) => {
+        // console.log("Token :- ", data.access_token);
+        setToken(data.access_token);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   //--- Get Token Post Rates API ---//
 
   //-------------- New Packaging Details Post API ----------------//
@@ -140,55 +163,6 @@ export default function ShipmentProgressStep({ navigation }) {
     //------ order detail set data ---------//
 
     //------ Dynamic Data Get Rates ---------//
-    const data = {
-      accountNumber: {
-        value: "510087720",
-      },
-      rateRequestControlParameters: {
-        returnTransitTimes: true,
-        servicesNeededOnRateFailure: true,
-        variableOptions: "FREIGHT_GUARANTEE",
-        rateSortOrder: "SERVICENAMETRADITIONAL",
-      },
-      requestedShipment: {
-        shipper: {
-          address: {
-            streetLines: [f.address],
-            city: f.city,
-            stateOrProvinceCode: f.state,
-            postalCode: f.zip,
-            countryCode: f.country,
-          },
-        },
-        recipient: {
-          address: {
-            streetLines: [t.address],
-            city: t.city,
-            stateOrProvinceCode: t.state,
-            postalCode: t.zip,
-            countryCode: t.country,
-          },
-        },
-        shipDateStamp: "2023-03-24",
-        packagingType: g.packaging,
-        pickupType: "USE_SCHEDULED_PICKUP",
-        rateRequestType: ["ACCOUNT"],
-        requestedPackageLineItems: [
-          {
-            weight: {
-              units: g.mass,
-              value: g.weight,
-            },
-          },
-        ],
-      },
-    };
-
-    // console.log("data0000" + JSON.stringify(data));
-
-    //------ Dynamic Data Get Rates ---------//
-
-    //------ Static Data Get Rates ---------//
     // const data = {
     //   accountNumber: {
     //     value: "510087720",
@@ -202,36 +176,85 @@ export default function ShipmentProgressStep({ navigation }) {
     //   requestedShipment: {
     //     shipper: {
     //       address: {
-    //         streetLines: ["965 Mission St #572", ""],
-    //         city: "San Francisco",
-    //         stateOrProvinceCode: "CA",
-    //         postalCode: "94103",
-    //         countryCode: "US",
+    //         streetLines: [f.address],
+    //         city: f.city,
+    //         stateOrProvinceCode: f.state,
+    //         postalCode: f.zip,
+    //         countryCode: f.country,
     //       },
     //     },
     //     recipient: {
     //       address: {
-    //         streetLines: ["1092 Indian Summer Ct", ""],
-    //         city: "San Jose",
-    //         stateOrProvinceCode: "CA",
-    //         postalCode: "95122",
-    //         countryCode: "US",
+    //         streetLines: [t.address],
+    //         city: t.city,
+    //         stateOrProvinceCode: t.state,
+    //         postalCode: t.zip,
+    //         countryCode: t.country,
     //       },
     //     },
     //     shipDateStamp: "2023-03-24",
-    //     packagingType: "YOUR_PACKAGING",
+    //     packagingType: g.packaging,
     //     pickupType: "USE_SCHEDULED_PICKUP",
     //     rateRequestType: ["ACCOUNT"],
     //     requestedPackageLineItems: [
     //       {
     //         weight: {
-    //           units: "LB",
-    //           value: "22",
+    //           units: g.mass,
+    //           value: g.weight,
     //         },
     //       },
     //     ],
     //   },
     // };
+
+    // console.log("data0000" + JSON.stringify(data));
+
+    //------ Dynamic Data Get Rates ---------//
+
+    //------ Static Data Get Rates ---------//
+    const data = {
+      accountNumber: {
+        value: "510087720",
+      },
+      rateRequestControlParameters: {
+        returnTransitTimes: true,
+        servicesNeededOnRateFailure: true,
+        variableOptions: "FREIGHT_GUARANTEE",
+        rateSortOrder: "SERVICENAMETRADITIONAL",
+      },
+      requestedShipment: {
+        shipper: {
+          address: {
+            streetLines: ["965 Mission St #572", ""],
+            city: "San Francisco",
+            stateOrProvinceCode: "CA",
+            postalCode: "94103",
+            countryCode: "US",
+          },
+        },
+        recipient: {
+          address: {
+            streetLines: ["1092 Indian Summer Ct", ""],
+            city: "San Jose",
+            stateOrProvinceCode: "CA",
+            postalCode: "95122",
+            countryCode: "US",
+          },
+        },
+        shipDateStamp: "2023-03-24",
+        packagingType: "YOUR_PACKAGING",
+        pickupType: "USE_SCHEDULED_PICKUP",
+        rateRequestType: ["ACCOUNT"],
+        requestedPackageLineItems: [
+          {
+            weight: {
+              units: "LB",
+              value: "22",
+            },
+          },
+        ],
+      },
+    };
     // console.log("data -----::::: " + JSON.stringify(data));
 
     //------ Static Data Get Rates ---------//
@@ -260,7 +283,12 @@ export default function ShipmentProgressStep({ navigation }) {
   };
   //-------------- New Packaging Details Post API ----------------//
 
-  
+  useEffect(() => {
+    if (rateId != undefined) {
+      AsyncStorage.setItem("rate_id", rateId);
+      // console.log("id -----:::::" + rateId);
+    }
+  }, [rateId]);
 
   return (
     <>
