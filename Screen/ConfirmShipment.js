@@ -9,16 +9,43 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Header from "./Header";
-const SubmitShipment = ({ navigation }) => {
+import * as ImagePicker from "react-native-image-picker";
+import DocumentPicker from "react-native-document-picker";
+
+const ConfirmShipment = ({ navigation }) => {
   const [selectedLanguage, setSelectedLanguage] = useState();
+  const [file, setFile] = useState(null);
+  handleChoosePhoto = () => {
+    const options = {};
+    ImagePicker.launchImageLibrary(options, (respone) => {
+      console.log("resposne", response);
+    });
+  };
+
+  const selectFile = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      setFile(result);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker
+      } else {
+        throw err;
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-        <Header navigation={navigation} />
+      <Header navigation={navigation} />
       <ScrollView style={styles.scrollView}>
         <View style={styles.contentView}>
           <Text style={styles.h1}>Create a new</Text>
@@ -87,7 +114,7 @@ const SubmitShipment = ({ navigation }) => {
             </Text>
             <Text
               style={{
-                paddingRight: 38,
+                paddingRight: 62,
                 color: "#cf9e63",
               }}
             >
@@ -95,24 +122,40 @@ const SubmitShipment = ({ navigation }) => {
             </Text>
           </View>
           <View style={styles.formTitle}>
-          <Text style={styles.formTitleh1}>Finish:</Text>
-          <Text style={styles.formTitleh2}>Step4-4</Text>
-        </View>
-          <View  >
-            <Text style={styles.successHead} >SUCCESS!</Text>
+            <Text style={styles.formTitleh1}>Image Upload:</Text>
+            <Text style={styles.formTitleh2}>Step 3-4</Text>
           </View>
-          <View style={styles.checkSign}> 
-          <Image
-          style={styles.companyLogo}
-          source={{
-            uri: "https://i.imgur.com/GwStPmg.png",
-          }}
-        />
+          <Text style={styles.label}>Upload Your Photo:*</Text>
+          <TextInput
+            style={styles.input}
+            //   onChangeText={onChangeText}
+            //   value={text}
+            placeholder="Email Id"
+          />
+          <Text style={styles.label}>Upload Your Signature Photo:*</Text>
+         
+          <TextInput
+            style={styles.input}
+            //   onChangeText={onChangeNumber}
+            //   value={number}
+            placeholder="UserName"
+            keyboardType="Years in Business"
+          />
+          <View style={styles.btn}>
+            <Pressable
+              style={styles.prevbutton}
+              onPress={() => navigation.navigate("ShipmentInfo")}
+            >
+              <Text style={styles.btntext}>Previous</Text>
+              
+            </Pressable>
+            <Pressable
+              style={styles.button}
+              onPress={() => navigation.navigate("Submit")}
+            >
+              <Text style={styles.btntext}>Submit</Text>
+            </Pressable>
           </View>
-          <View  >
-          <Text style={styles.successMsg}>You Have{"\n"} Successfully{"\n"} Signed Up</Text>
-        </View>
-          
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -123,10 +166,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fbf1e6",
   },
-  
   scrollView: {
     marginHorizontal: 20,
-    marginTop:110
+    marginTop: 110,
   },
   h1: {
     fontSize: 25,
@@ -146,7 +188,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
   },
-
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 20,
+    borderStyle: "solid",
+    borderBottomColor: "#6B6969",
+  },
   btn: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -158,30 +208,62 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingBottom: 26,
   },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
+    backgroundColor: "#cf9e63",
+    marginTop: 28,
+    width: 100,
+    height: 50,
+    textAlign: "center",
+    marginLeft: 200,
+  },
+  prevbutton: {
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
+    backgroundColor: "#b1aeae",
+    marginTop: 28,
+    width: 100,
+    height: 50,
+    textAlign: "center",
+    marginLeft: 200,
+  },
+  btntext: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+    width: 100,
+    height: 50,
+    textAlign: "center",
+    paddingTop: 15,
+  },
   formTitle: {
     paddingTop: 30,
     flexDirection: "row",
-    flexWrap: "wrap",
-    paddingLeft: 15,
+    paddingLeft: 5,
   },
   formTitleh1: {
-    fontSize: 25,
+    fontSize: 23,
     marginBottom: 28,
     color: "#cf9e63",
     fontWeight: "400",
   },
   formTitleh2: {
-    fontSize: 25,
+    fontSize: 23,
     marginBottom: 28,
     color: "#b1aeae",
     fontWeight: "400",
-    paddingLeft: 118,
-
+    paddingLeft: 50,
   },
   iconAligen: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 25,
+    paddingRight:5
   },
   label: {
     paddingLeft: 10,
@@ -193,34 +275,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     // marginBottom:10
   },
-  successHead:{
-    fontSize: 25,
-    marginBottom: 28,
-    color: "#cf9e63",
-    fontWeight: "400",
-    textAlign: "center",
-  },
-  successMsg:{
-    fontSize: 22,
-    marginBottom: 28,
-    color: "#cf9e63",
-    fontWeight: "400",
-    textAlign: "center",
-  },
-  checkSign:{
-    alignItems:'center',
-    marginBottom:20
-  },
-  SquareShapeView: {
-    marginTop:20,
-    width:380,
-    height: 80,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'white',
-    backgroundColor:'white'
-    // paddingLeft:20,
-  },
 });
 
-export default SubmitShipment;
+export default ConfirmShipment;

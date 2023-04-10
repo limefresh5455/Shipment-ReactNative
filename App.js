@@ -1,18 +1,23 @@
-import { StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import SignIn from "./Screen/SignIn";
 import BusinessProfile from "./Screen/BusinessProfile";
-// import ConfirmEmail from "./Screen/ConfirmEmail";
+import ConfirmEmail from "./Screen/ConfirmEmail";
 import SignUp from "./Screen/SignUp";
+import ShipmentInfo from "./Screen/ShipmentInfo";
+import CreateShipment from "./Screen/CreateShipment";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ConfirmShipment from "./Screen/ConfirmShipment";
 import SubmitShipment from "./Screen/SubmitShipment";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import ShipmentProgressStep from "./Screen/ShipmentProgressStep";
 
+// import Tabs from './Screen/Tabs';
 export default function App() {
   const Stack = createNativeStackNavigator();
+
   return (
-    //  <SafeAreaProvider>
+    // <SafeAreaProvider>
     //   <NavigationContainer>
     //     <Stack.Navigator initialRouteName="SignIn">
     //       <Stack.Screen
@@ -21,24 +26,33 @@ export default function App() {
     //         options={{ headerShown: false }}
     //       />
     //       <Stack.Screen
-    //         name="SignUp"
-    //         component={SignUp}
-    //         options={{ headerShown: false, headerBackTitleVisible: false }}
-
-    //       />
-    //       <Stack.Screen
     //         name="BusinessProfile"
     //         component={BusinessProfile}
     //         options={{ headerShown: false }}
     //       />
     //       <Stack.Screen
-    //         name="ShipmentProgressStep"
-    //         component={ShipmentProgressStep}
+    //         name="CreateShipment"
+    //         component={CreateShipment}
+    //         options={{ headerShown: false }}
+    //       />
+    //       <Stack.Screen
+    //         name="ShipmentInfo"
+    //         component={ShipmentInfo}
+    //         options={{ headerShown: false }}
+    //       />
+    //       <Stack.Screen
+    //         name="ConfirmShipment"
+    //         component={ConfirmShipment}
     //         options={{ headerShown: false }}
     //       />
     //       <Stack.Screen
     //         name="Submit"
     //         component={SubmitShipment}
+    //         options={{ headerShown: false }}
+    //       />
+    //       <Stack.Screen
+    //         name="SignUp"
+    //         component={SignUp}
     //         options={{ headerShown: false }}
     //       />
     //       <Stack.Screen
@@ -48,8 +62,11 @@ export default function App() {
     //       />
     //     </Stack.Navigator>
     //   </NavigationContainer>
-    //  </SafeAreaProvider>
-    <SignIn />
+    // </SafeAreaProvider>
+
+       <SignIn/>
+    // <ShipmentInfo/>
+    // <BusinessProfile/>
   );
 }
 
