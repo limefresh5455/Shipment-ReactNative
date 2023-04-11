@@ -36,6 +36,15 @@
         "projectId": "c868f89e-47d4-47d9-835c-aedd66be2da5"
       }
     },
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "",
+          "enableGooglePay": false
+        }
+      ]
+    ],
     "owner": "rohitsolanki2392"
   }
 }

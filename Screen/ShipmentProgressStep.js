@@ -25,7 +25,7 @@ import { CheckBox, Stack } from "@rneui/themed";
 import OrderDetails from "./OrderDetails";
 // import PaymentModal from "./PaymentModal";
 import { Dialog } from "@rneui/themed";
-import { CardForm } from "@stripe/stripe-react-native";
+import { CardForm , StripeProvider } from "@stripe/stripe-react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -259,7 +259,7 @@ export default function ShipmentProgressStep({ navigation }) {
 
     //------ Static Data Get Rates ---------//
 
-    setTimeout(() => {
+    setTimeout(function() {
       fetch("https://apis-sandbox.fedex.com/rate/v1/rates/quotes", {
         method: "POST",
         headers: {
@@ -336,100 +336,101 @@ export default function ShipmentProgressStep({ navigation }) {
           >
             {paymentModal ? (
               <Dialog>
-                <Formik
-                  initialValues={{
-                    email: "",
-                    holderName: "",
-                  }}
-                  validationSchema={validationSchema}
-                  onSubmit={handleSubmit}
-                >
-                  {({
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    values,
-                    errors,
-                    touched,
-                  }) => (
-                    <>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Text style={{ fontSize: 25, color: "CE9D62" }}>
-                          Card Details
-                        </Text>
-                        <Text
-                          style={{ fontWeight: "bold" }}
-                          onPress={closeModal}
-                        >
-                          X
-                        </Text>
-                      </View>
-
-                      <TextInput
-                        style={styles.input}
-                        onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
-                        value={values.email}
-                        placeholder="Email"
-                        keyboardType="email-address"
-                      />
-                      {touched.email && errors.email && (
-                        <Text style={styles.error}>{errors.email}</Text>
-                      )}
-                      <TextInput
-                        style={styles.input}
-                        onChangeText={handleChange("holderName")}
-                        onBlur={handleBlur("holderName")}
-                        value={values.holderName}
-                        placeholder="holderName"
-                      />
-                      {touched.holderName && errors.holderName && (
-                        <Text style={styles.error}>{errors.holderName}</Text>
-                      )}
-
-                      <CardForm
-                        postalCodeEnabled={false}
-                        onFormComplete={(cardDetails) => {
-                          setCardDetails(cardDetails);
-                        }}
-                        style={{
-                          height: 250,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          textAlign: "center",
-                        }}
-                      />
-
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: "#CE9D62",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginLeft: 5,
-                          marginRight: 5,
-                          borderRadius: 8,
-                        }}
-                        onPress={handleSubmit}
-                      >
-                        <Text
+                <StripeProvider publishableKey="pk_test_51MniNtSGd0ho6TQXHQ8Puew9Z1Mk1WVkXRruOE4g58O8U5tdTWZsgWXjTAhH9RmWSgta4USqjd8NupY3KMtXXsFF00DBojq5zE">
+                  <Formik
+                    initialValues={{
+                      email: "",
+                      holderName: "",
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                  >
+                    {({
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      values,
+                      errors,
+                      touched,
+                    }) => (
+                      <>
+                        <View
                           style={{
-                            color: "white",
-                            padding: 15,
-                            fontSize: 18,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
                           }}
                         >
-                          Validate
-                        </Text>
-                      </TouchableOpacity>
-                      {/* <Button onPress={handleSubmit} title="Submit" /> */}
-                    </>
-                  )}
-                </Formik>
+                          <Text style={{ fontSize: 25, color: "CE9D62" }}>
+                            Card Details
+                          </Text>
+                          <Text
+                            style={{ fontWeight: "bold" }}
+                            onPress={closeModal}
+                          >
+                            X
+                          </Text>
+                        </View>
+
+                        <TextInput
+                          style={styles.input}
+                          onChangeText={handleChange("email")}
+                          onBlur={handleBlur("email")}
+                          value={values.email}
+                          placeholder="Email"
+                          keyboardType="email-address"
+                        />
+                        {touched.email && errors.email && (
+                          <Text style={styles.error}>{errors.email}</Text>
+                        )}
+                        <TextInput
+                          style={styles.input}
+                          onChangeText={handleChange("holderName")}
+                          onBlur={handleBlur("holderName")}
+                          value={values.holderName}
+                          placeholder="holderName"
+                        />
+                        {touched.holderName && errors.holderName && (
+                          <Text style={styles.error}>{errors.holderName}</Text>
+                        )}
+
+                        <CardForm
+                          postalCodeEnabled={false}
+                          onFormComplete={(cardDetails) => {
+                            setCardDetails(cardDetails);
+                          }}
+                          style={{
+                            height: 200,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            textAlign: "center",
+                          }}
+                        />
+
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: "#CE9D62",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginLeft: 5,
+                            marginRight: 5,
+                            borderRadius: 8,
+                          }}
+                          onPress={handleSubmit}
+                        >
+                          <Text
+                            style={{
+                              color: "white",
+                              padding: 15,
+                              fontSize: 18,
+                            }}
+                          >
+                            Validate
+                          </Text>
+                        </TouchableOpacity>
+                      </>
+                    )}
+                  </Formik>
+                </StripeProvider>
               </Dialog>
             ) : (
               ""
@@ -584,7 +585,6 @@ export default function ShipmentProgressStep({ navigation }) {
                 </View>
                 <View
                   style={{
-                    display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
                     marginLeft: 20,
@@ -734,16 +734,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 5,
-    paddingLeft: 20,
-    justifyContent: "space-between",
-    paddingLeft: -60,
-    borderRadius: 10,
-    paddingRight: 15,
-  },
+
 
   inputs: {
     height: 40,

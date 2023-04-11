@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
    fontSize: 30,
     fontWeight: "250",
     marginRight: 20,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     textAlign: "center",
     paddingRight: 5,
     marginLeft: -40,
