@@ -336,7 +336,6 @@ export default function ShipmentProgressStep({ navigation }) {
           >
             {paymentModal ? (
               <Dialog>
-                <StripeProvider publishableKey="pk_test_51MniNtSGd0ho6TQXHQ8Puew9Z1Mk1WVkXRruOE4g58O8U5tdTWZsgWXjTAhH9RmWSgta4USqjd8NupY3KMtXXsFF00DBojq5zE">
                   <Formik
                     initialValues={{
                       email: "",
@@ -430,7 +429,6 @@ export default function ShipmentProgressStep({ navigation }) {
                       </>
                     )}
                   </Formik>
-                </StripeProvider>
               </Dialog>
             ) : (
               ""
