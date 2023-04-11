@@ -36,25 +36,13 @@
         "projectId": "c868f89e-47d4-47d9-835c-aedd66be2da5"
       }
     },
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
-            "buildToolsVersion": "33.0.0"
-          }
-        }
-      ],
-      [
-        "@stripe/stripe-react-native",
-        {
-          "merchantIdentifier": "com.rohitsolanki2392.shipwwt",
-          "enableGooglePay": true
-        }
+  "expo": {
+    "android": {
+      "permissions": [
+        "com.android.vending.BILLING"
       ]
-    ],
+    }
+  },
     "owner": "rohitsolanki2392"
   }
 }
