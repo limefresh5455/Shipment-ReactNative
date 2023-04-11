@@ -26,7 +26,10 @@
         "backgroundColor": "#FFFFFF",
         "supportsTablet": true
       },
-      "package": "com.rohitsolanki2392.shipwwt"
+      "package": "com.rohitsolanki2392.shipwwt",
+      "permissions": [
+        "com.android.vending.BILLING"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,13 +39,15 @@
         "projectId": "c868f89e-47d4-47d9-835c-aedd66be2da5"
       }
     },
-  "expo": {
-    "android": {
-      "permissions": [
-        "com.android.vending.BILLING"
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "com.rohitsolanki2392.shipwwt",
+          "enableGooglePay": true
+        }
       ]
-    }
-  },
+    ],
     "owner": "rohitsolanki2392"
   }
 }
