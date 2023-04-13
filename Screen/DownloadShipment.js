@@ -84,11 +84,9 @@ export default function DownloadShipment(props) {
     getData = await AsyncStorage.getItem("user");
     addrFromData = await AsyncStorage.getItem("addressFrom");
     toaddressData = await AsyncStorage.getItem("addressTo");
-
     let g = JSON.parse(getData);
     let f = JSON.parse(addrFromData);
     let t = JSON.parse(toaddressData);
-
     // const data = {
     //   labelResponseOptions: "URL_ONLY",
     //   requestedShipment: {
@@ -146,7 +144,6 @@ export default function DownloadShipment(props) {
     //     value: "510087020",
     //   },
     // };
-
     //-------------- Dynamic data for label --------------//
 
     fetch("https://apis-sandbox.fedex.com/ship/v1/shipments", {

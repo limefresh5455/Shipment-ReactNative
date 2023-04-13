@@ -25,7 +25,7 @@ import { CheckBox, Stack } from "@rneui/themed";
 import OrderDetails from "./OrderDetails";
 // import PaymentModal from "./PaymentModal";
 import { Dialog } from "@rneui/themed";
-import { CardForm , StripeProvider } from "@stripe/stripe-react-native";
+// import { CardForm, StripeProvider } from "@stripe/stripe-react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -64,10 +64,10 @@ export default function ShipmentProgressStep({ navigation }) {
       ...values,
       ...cardDetails,
     };
-    if (!cardDetails.complete) {
-      alert("Please enter a valid card");
-      return;
-    }
+    // if (!cardDetails.complete) {
+    //   alert("Please enter a valid card");
+    //   return;
+    // }
     setPaymentModal(false);
     if (card) {
       setShowButton(true);
@@ -259,7 +259,7 @@ export default function ShipmentProgressStep({ navigation }) {
 
     //------ Static Data Get Rates ---------//
 
-    setTimeout(function() {
+    setTimeout(function () {
       fetch("https://apis-sandbox.fedex.com/rate/v1/rates/quotes", {
         method: "POST",
         headers: {
@@ -335,7 +335,6 @@ export default function ShipmentProgressStep({ navigation }) {
             scrollViewProps={defaultScrollViewProps}
           >
             {paymentModal ? (
-              <StripeProvider publishableKey="pk_test_51MniNtSGd0ho6TQXHQ8Puew9Z1Mk1WVkXRruOE4g58O8U5tdTWZsgWXjTAhH9RmWSgta4USqjd8NupY3KMtXXsFF00DBojq5zE">
                 <Dialog>
                   <Formik
                     initialValues={{
@@ -393,7 +392,7 @@ export default function ShipmentProgressStep({ navigation }) {
                           <Text style={styles.error}>{errors.holderName}</Text>
                         )}
 
-                        <CardForm
+                        {/* <CardForm
                           postalCodeEnabled={false}
                           onFormComplete={(cardDetails) => {
                             setCardDetails(cardDetails);
@@ -404,7 +403,7 @@ export default function ShipmentProgressStep({ navigation }) {
                             alignItems: "center",
                             textAlign: "center",
                           }}
-                        />
+                        /> */}
 
                         <TouchableOpacity
                           style={{
@@ -431,7 +430,6 @@ export default function ShipmentProgressStep({ navigation }) {
                     )}
                   </Formik>
                 </Dialog>
-              </StripeProvider>
             ) : (
               ""
             )}
@@ -733,8 +731,6 @@ const styles = StyleSheet.create({
     padding: 8,
     textAlign: "center",
   },
-
-
 
   inputs: {
     height: 40,

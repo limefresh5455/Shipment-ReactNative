@@ -25,7 +25,7 @@ import { Picker } from "@react-native-picker/picker";
 // import Carousel from "react-native-snap-carousel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DatePicker from "react-native-modern-datepicker";
-// import moment from "moment";
+import moment from "moment";
 
 const Trial = () => {
   //----- DatePicker -----//
@@ -56,6 +56,7 @@ const Trial = () => {
     setShow(!show);
   };
   const handleDate = (date) => {
+    moment(date).format("YYYY-MM-DD");
     setFormData({ ...formData, date });
     setShow(false);
   };
