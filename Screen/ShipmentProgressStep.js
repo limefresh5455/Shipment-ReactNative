@@ -54,7 +54,6 @@ export default function ShipmentProgressStep({ navigation }) {
   const [showButton, setShowButton] = useState(false);
   const [token, setToken] = useState();
   const [cardDetails, setCardDetails] = useState("");
-  const [cardDetails1, setCardDetails1] = useState("");
   const [dollar, setDollar] = useState("1.00");
 
   console.log("dollar", dollar);
@@ -64,10 +63,10 @@ export default function ShipmentProgressStep({ navigation }) {
       ...values,
       ...cardDetails,
     };
-    // if (!cardDetails.complete) {
-    //   alert("Please enter a valid card");
-    //   return;
-    // }
+    if (!cardDetails.complete) {
+      alert("Please enter a valid card");
+      return;
+    }
     setPaymentModal(false);
     if (card) {
       setShowButton(true);
@@ -392,7 +391,7 @@ export default function ShipmentProgressStep({ navigation }) {
                           <Text style={styles.error}>{errors.holderName}</Text>
                         )}
 
-                        {/* <CardForm
+                        <CardForm
                           postalCodeEnabled={false}
                           onFormComplete={(cardDetails) => {
                             setCardDetails(cardDetails);
@@ -403,7 +402,7 @@ export default function ShipmentProgressStep({ navigation }) {
                             alignItems: "center",
                             textAlign: "center",
                           }}
-                        /> */}
+                        />
 
                         <TouchableOpacity
                           style={{
