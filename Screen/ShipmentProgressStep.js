@@ -25,7 +25,7 @@ import { CheckBox, Stack } from "@rneui/themed";
 import OrderDetails from "./OrderDetails";
 // import PaymentModal from "./PaymentModal";
 import { Dialog } from "@rneui/themed";
-// import { CardForm, StripeProvider } from "@stripe/stripe-react-native";
+import { CardForm, StripeProvider } from "@stripe/stripe-react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -64,10 +64,10 @@ export default function ShipmentProgressStep({ navigation }) {
       ...values,
       ...cardDetails,
     };
-    // if (!cardDetails.complete) {
-    //   alert("Please enter a valid card");
-    //   return;
-    // }
+    if (!cardDetails.complete) {
+      alert("Please enter a valid card");
+      return;
+    }
     setPaymentModal(false);
     if (card) {
       setShowButton(true);
@@ -392,7 +392,7 @@ export default function ShipmentProgressStep({ navigation }) {
                           <Text style={styles.error}>{errors.holderName}</Text>
                         )}
 
-                        {/* <CardForm
+                        <CardForm
                           postalCodeEnabled={false}
                           onFormComplete={(cardDetails) => {
                             setCardDetails(cardDetails);
@@ -403,7 +403,7 @@ export default function ShipmentProgressStep({ navigation }) {
                             alignItems: "center",
                             textAlign: "center",
                           }}
-                        /> */}
+                        />
 
                         <TouchableOpacity
                           style={{
