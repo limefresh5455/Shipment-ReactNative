@@ -29,7 +29,13 @@
       "package": "com.rohitsolanki2392.shipwwt"
     },
     "plugins": [
-      ["@stripe/stripe-react-native"]
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "",
+          "enableGooglePay": true
+        }
+      ]
     ],
     "web": {
       "favicon": "./assets/favicon.png"
