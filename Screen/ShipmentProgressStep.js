@@ -54,7 +54,6 @@ export default function ShipmentProgressStep({ navigation }) {
   const [showButton, setShowButton] = useState(false);
   const [token, setToken] = useState();
   const [cardDetails, setCardDetails] = useState("");
-  const [cardDetails1, setCardDetails1] = useState("");
   const [dollar, setDollar] = useState("1.00");
 
   console.log("dollar", dollar);
