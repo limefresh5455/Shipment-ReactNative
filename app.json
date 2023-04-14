@@ -28,6 +28,9 @@
       },
       "package": "com.rohitsolanki2392.shipwwt"
     },
+    "plugins": [
+      ["@stripe/stripe-react-native"]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
