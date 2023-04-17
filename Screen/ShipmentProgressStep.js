@@ -403,19 +403,6 @@ export default function ShipmentProgressStep({ navigation }) {
                         }}
                       />
 
-                      {/* <CardForm
-                          postalCodeEnabled={false}
-                          onFormComplete={(cardDetails) => {
-                            setCardDetails(cardDetails);
-                          }}
-                          style={{
-                            height: 200,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            textAlign: "center",
-                          }}
-                        /> */}
-
                       <TouchableOpacity
                         style={{
                           backgroundColor: "#CE9D62",
@@ -505,10 +492,6 @@ export default function ShipmentProgressStep({ navigation }) {
                       const serviceEstimateDate = new Date(
                         data.operationalDetail.deliveryDate
                       );
-                      // let g = JSON.parse(getData);
-                      // console.log("g",g)
-                      // console.log("serviceEstimateDate", serviceEstimateDate);
-
                       const now = new Date("2023-03-24T12:00:00");
                       const serviceEstimateDays = Math.round(
                         (serviceEstimateDate.getTime() - now.getTime()) /
