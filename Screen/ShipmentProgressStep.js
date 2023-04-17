@@ -25,7 +25,7 @@ import { CheckBox, Stack } from "@rneui/themed";
 import OrderDetails from "./OrderDetails";
 // import PaymentModal from "./PaymentModal";
 import { Dialog } from "@rneui/themed";
-import { CardForm, StripeProvider } from "@stripe/stripe-react-native";
+import { CardField, CardForm, StripeProvider } from "@stripe/stripe-react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -134,7 +134,6 @@ export default function ShipmentProgressStep({ navigation }) {
     })
       .then((response) => response.json())
       .then(async (data) => {
-        // console.log("Token :- ", data.access_token);
         setToken(data.access_token);
       })
       .catch((error) => {
@@ -153,65 +152,13 @@ export default function ShipmentProgressStep({ navigation }) {
     let g = JSON.parse(getData);
     let f = JSON.parse(addrFromData);
     let t = JSON.parse(toaddressData);
-    // let p = JSON.parse(packagingData);
 
     //------ order detail set data ---------//
-
-    // const data = { g., user_lname, user_email, user_phone };
-    // AsyncStorage.setItem("orderDetails", data);
-
+        // const data = { g., user_lname, user_email, user_phone };
+        // AsyncStorage.setItem("orderDetails", data);
     //------ order detail set data ---------//
 
     //------ Dynamic Data Get Rates ---------//
-    const data = {
-      accountNumber: {
-        value: "510087720",
-      },
-      rateRequestControlParameters: {
-        returnTransitTimes: true,
-        servicesNeededOnRateFailure: true,
-        variableOptions: "FREIGHT_GUARANTEE",
-        rateSortOrder: "SERVICENAMETRADITIONAL",
-      },
-      requestedShipment: {
-        shipper: {
-          address: {
-            streetLines: [f.address],
-            city: f.city,
-            stateOrProvinceCode: f.state,
-            postalCode: f.zip,
-            countryCode: f.country,
-          },
-        },
-        recipient: {
-          address: {
-            streetLines: [t.address],
-            city: t.city,
-            stateOrProvinceCode: t.state,
-            postalCode: t.zip,
-            countryCode: t.country,
-          },
-        },
-        shipDateStamp: "2023-03-24",
-        packagingType: g.packaging,
-        pickupType: "USE_SCHEDULED_PICKUP",
-        rateRequestType: ["ACCOUNT"],
-        requestedPackageLineItems: [
-          {
-            weight: {
-              units: g.mass,
-              value: g.weight,
-            },
-          },
-        ],
-      },
-    };
-
-    // console.log("data0000" + JSON.stringify(data));
-
-    //------ Dynamic Data Get Rates ---------//
-
-    //------ Static Data Get Rates ---------//
     // const data = {
     //   accountNumber: {
     //     value: "510087720",
@@ -225,38 +172,82 @@ export default function ShipmentProgressStep({ navigation }) {
     //   requestedShipment: {
     //     shipper: {
     //       address: {
-    //         streetLines: ["965 Mission St #572", ""],
-    //         city: "San Francisco",
-    //         stateOrProvinceCode: "CA",
-    //         postalCode: "94103",
-    //         countryCode: "US",
+    //         streetLines: [f.address],
+    //         city: f.city,
+    //         stateOrProvinceCode: f.state,
+    //         postalCode: f.zip,
+    //         countryCode: f.country,
     //       },
     //     },
     //     recipient: {
     //       address: {
-    //         streetLines: ["1092 Indian Summer Ct", ""],
-    //         city: "San Jose",
-    //         stateOrProvinceCode: "CA",
-    //         postalCode: "95122",
-    //         countryCode: "US",
+    //         streetLines: [t.address],
+    //         city: t.city,
+    //         stateOrProvinceCode: t.state,
+    //         postalCode: t.zip,
+    //         countryCode: t.country,
     //       },
     //     },
     //     shipDateStamp: "2023-03-24",
-    //     packagingType: "YOUR_PACKAGING",
+    //     packagingType: g.packaging,
     //     pickupType: "USE_SCHEDULED_PICKUP",
     //     rateRequestType: ["ACCOUNT"],
     //     requestedPackageLineItems: [
     //       {
     //         weight: {
-    //           units: "LB",
-    //           value: "22",
+    //           units: g.mass,
+    //           value: g.weight,
     //         },
     //       },
     //     ],
     //   },
     // };
-    // console.log("data -----::::: " + JSON.stringify(data));
+    //------ Dynamic Data Get Rates ---------//
 
+    //------ Static Data Get Rates ---------//
+    const data = {
+      accountNumber: {
+        value: "510087720",
+      },
+      rateRequestControlParameters: {
+        returnTransitTimes: true,
+        servicesNeededOnRateFailure: true,
+        variableOptions: "FREIGHT_GUARANTEE",
+        rateSortOrder: "SERVICENAMETRADITIONAL",
+      },
+      requestedShipment: {
+        shipper: {
+          address: {
+            streetLines: ["965 Mission St #572", ""],
+            city: "San Francisco",
+            stateOrProvinceCode: "CA",
+            postalCode: "94103",
+            countryCode: "US",
+          },
+        },
+        recipient: {
+          address: {
+            streetLines: ["1092 Indian Summer Ct", ""],
+            city: "San Jose",
+            stateOrProvinceCode: "CA",
+            postalCode: "95122",
+            countryCode: "US",
+          },
+        },
+        shipDateStamp: "2023-03-24",
+        packagingType: "YOUR_PACKAGING",
+        pickupType: "USE_SCHEDULED_PICKUP",
+        rateRequestType: ["ACCOUNT"],
+        requestedPackageLineItems: [
+          {
+            weight: {
+              units: "LB",
+              value: "22",
+            },
+          },
+        ],
+      },
+    };
     //------ Static Data Get Rates ---------//
 
     setTimeout(function () {
@@ -271,10 +262,7 @@ export default function ShipmentProgressStep({ navigation }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          // console.log("data!!!!!!!", data);
-          // let rate = ;
           setRates(data.output.rateReplyDetails);
-          // console.log("rate", rate.serviceName);
         })
         .catch((e) => {
           console.log("errors", e);
@@ -393,7 +381,7 @@ export default function ShipmentProgressStep({ navigation }) {
                       )}
 
                       <CardField
-                        postalCodeEnabled={true}
+                        postalCodeEnabled={false}
                         placeholders={{
                           number: "4242 4242 4242 4242",
                         }}
@@ -407,10 +395,7 @@ export default function ShipmentProgressStep({ navigation }) {
                           marginVertical: 30,
                         }}
                         onCardChange={(cardDetails) => {
-                          console.log("cardDetails", cardDetails);
-                        }}
-                        onFocus={(focusedField) => {
-                          console.log("focusField", focusedField);
+                          setCardDetails(cardDetails);
                         }}
                       />
 

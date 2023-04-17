@@ -56,7 +56,6 @@ const Trial = () => {
     setShow(!show);
   };
   const handleDate = (date) => {
-    moment(date).format("YYYY-MM-DD");
     setFormData({ ...formData, date });
     setShow(false);
   };

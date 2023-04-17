@@ -21,63 +21,63 @@ export default function DownloadShipment(props) {
     // rateId = AsyncStorage.getItem("rate_id");
 
     //-------------- static data for label --------------//
-    // let data = {
-    //   labelResponseOptions: "URL_ONLY",
-    //   requestedShipment: {
-    //     shipper: {
-    //       contact: {
-    //         personName: "MrsHippo",
-    //         phoneNumber: "4151234567",
-    //         companyName: "Google",
-    //       },
-    //       address: {
-    //         streetLines: ["1092 Indian Summer Ct "],
-    //         city: "San Jose",
-    //         stateOrProvinceCode: "CA",
-    //         postalCode: "95122",
-    //         countryCode: "US",
-    //       },
-    //     },
-    //     recipients: [
-    //       {
-    //         contact: {
-    //           personName: "MrsHippo",
-    //           phoneNumber: "4151234568",
-    //           companyName: "facebook",
-    //         },
-    //         address: {
-    //           streetLines: ["965 Mission St #572"],
-    //           city: "San Francisco",
-    //           stateOrProvinceCode: "CA",
-    //           postalCode: "94103",
-    //           countryCode: "US",
-    //         },
-    //       },
-    //     ],
-    //     shipDateStamp: "2023-03-24",
-    //     packagingType: "YOUR_PACKAGING",
-    //     serviceType: "FIRST_OVERNIGHT",
-    //     pickupType: "USE_SCHEDULED_PICKUP",
-    //     shippingChargesPayment: {
-    //       paymentType: "SENDER",
-    //     },
-    //     labelSpecification: {
-    //       imageType: "PDF",
-    //       labelStockType: "PAPER_85X11_TOP_HALF_LABEL",
-    //     },
-    //     requestedPackageLineItems: [
-    //       {
-    //         weight: {
-    //           units: "LB",
-    //           value: "22",
-    //         },
-    //       },
-    //     ],
-    //   },
-    //   accountNumber: {
-    //     value: "510087020",
-    //   },
-    // };
+    let data = {
+      labelResponseOptions: "URL_ONLY",
+      requestedShipment: {
+        shipper: {
+          contact: {
+            personName: "MrsHippo",
+            phoneNumber: "4151234567",
+            companyName: "Google",
+          },
+          address: {
+            streetLines: ["1092 Indian Summer Ct "],
+            city: "San Jose",
+            stateOrProvinceCode: "CA",
+            postalCode: "95122",
+            countryCode: "US",
+          },
+        },
+        recipients: [
+          {
+            contact: {
+              personName: "MrsHippo",
+              phoneNumber: "4151234568",
+              companyName: "facebook",
+            },
+            address: {
+              streetLines: ["965 Mission St #572"],
+              city: "San Francisco",
+              stateOrProvinceCode: "CA",
+              postalCode: "94103",
+              countryCode: "US",
+            },
+          },
+        ],
+        shipDateStamp: "2023-03-24",
+        packagingType: "YOUR_PACKAGING",
+        serviceType: "FIRST_OVERNIGHT",
+        pickupType: "USE_SCHEDULED_PICKUP",
+        shippingChargesPayment: {
+          paymentType: "SENDER",
+        },
+        labelSpecification: {
+          imageType: "PDF",
+          labelStockType: "PAPER_85X11_TOP_HALF_LABEL",
+        },
+        requestedPackageLineItems: [
+          {
+            weight: {
+              units: "LB",
+              value: "22",
+            },
+          },
+        ],
+      },
+      accountNumber: {
+        value: "510087020",
+      },
+    };
     //-------------- static data for label --------------//
 
     //-------------- Dynamic data for label --------------//
