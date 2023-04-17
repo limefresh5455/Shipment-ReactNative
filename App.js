@@ -13,7 +13,7 @@ import DownloadShipment from "./Screen/DownloadShipment";
  import Header from "./Screen/Header";
 import ShipmentProgressStep from "./Screen/ShipmentProgressStep";
 import ShipmentInfo from "./Screen/ShipmentInfo";
-import CreateShipment from "./Screen/CreateShipment";
+import PaymentScreen from "./Screen/PaymentScreen";
 import Trial from "./Screen/Trial";
 
 // import Tabs from './Screen/Tabs';
@@ -33,7 +33,7 @@ export default function App() {
     //         name="SignUp"
     //         component={SignUp}
     //         options={{ headerShown: false, headerBackTitleVisible: false }}
-            
+
     //       />
     //       <Stack.Screen
     //         name="BusinessProfile"
@@ -69,19 +69,15 @@ export default function App() {
     //   </NavigationContainer>
     // </SafeAreaProvider>
 
-
-
-     //   <BusinessProfile/>
-        <ShipmentProgressStep/>
-      //  <Trial/>
+    //   <BusinessProfile/>
+       <ShipmentProgressStep/>
+    //  <Trial/>
     //    <CreateShipment/>
     // <BusinessProfile1/>
     //   <ShipmentInfo/>
     //   <DownloadShipment/>
     //  <SignIn/>
-  
-
-
+   // <PaymentScreen />
   );
 }
 

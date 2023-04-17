@@ -60,9 +60,6 @@
         "projectId": "c868f89e-47d4-47d9-835c-aedd66be2da5"
       }
     },
-    "dependencies": {
-      "implementation": "com.google.android.material:material:3"
-    },
     "owner": "rohitsolanki2392"
   }
 }

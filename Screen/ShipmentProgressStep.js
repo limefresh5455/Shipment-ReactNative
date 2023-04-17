@@ -163,55 +163,6 @@ export default function ShipmentProgressStep({ navigation }) {
     //------ order detail set data ---------//
 
     //------ Dynamic Data Get Rates ---------//
-    // const data = {
-    //   accountNumber: {
-    //     value: "510087720",
-    //   },
-    //   rateRequestControlParameters: {
-    //     returnTransitTimes: true,
-    //     servicesNeededOnRateFailure: true,
-    //     variableOptions: "FREIGHT_GUARANTEE",
-    //     rateSortOrder: "SERVICENAMETRADITIONAL",
-    //   },
-    //   requestedShipment: {
-    //     shipper: {
-    //       address: {
-    //         streetLines: [f.address],
-    //         city: f.city,
-    //         stateOrProvinceCode: f.state,
-    //         postalCode: f.zip,
-    //         countryCode: f.country,
-    //       },
-    //     },
-    //     recipient: {
-    //       address: {
-    //         streetLines: [t.address],
-    //         city: t.city,
-    //         stateOrProvinceCode: t.state,
-    //         postalCode: t.zip,
-    //         countryCode: t.country,
-    //       },
-    //     },
-    //     shipDateStamp: "2023-03-24",
-    //     packagingType: g.packaging,
-    //     pickupType: "USE_SCHEDULED_PICKUP",
-    //     rateRequestType: ["ACCOUNT"],
-    //     requestedPackageLineItems: [
-    //       {
-    //         weight: {
-    //           units: g.mass,
-    //           value: g.weight,
-    //         },
-    //       },
-    //     ],
-    //   },
-    // };
-
-    // console.log("data0000" + JSON.stringify(data));
-
-    //------ Dynamic Data Get Rates ---------//
-
-    //------ Static Data Get Rates ---------//
     const data = {
       accountNumber: {
         value: "510087720",
@@ -225,36 +176,85 @@ export default function ShipmentProgressStep({ navigation }) {
       requestedShipment: {
         shipper: {
           address: {
-            streetLines: ["965 Mission St #572", ""],
-            city: "San Francisco",
-            stateOrProvinceCode: "CA",
-            postalCode: "94103",
-            countryCode: "US",
+            streetLines: [f.address],
+            city: f.city,
+            stateOrProvinceCode: f.state,
+            postalCode: f.zip,
+            countryCode: f.country,
           },
         },
         recipient: {
           address: {
-            streetLines: ["1092 Indian Summer Ct", ""],
-            city: "San Jose",
-            stateOrProvinceCode: "CA",
-            postalCode: "95122",
-            countryCode: "US",
+            streetLines: [t.address],
+            city: t.city,
+            stateOrProvinceCode: t.state,
+            postalCode: t.zip,
+            countryCode: t.country,
           },
         },
         shipDateStamp: "2023-03-24",
-        packagingType: "YOUR_PACKAGING",
+        packagingType: g.packaging,
         pickupType: "USE_SCHEDULED_PICKUP",
         rateRequestType: ["ACCOUNT"],
         requestedPackageLineItems: [
           {
             weight: {
-              units: "LB",
-              value: "22",
+              units: g.mass,
+              value: g.weight,
             },
           },
         ],
       },
     };
+
+    // console.log("data0000" + JSON.stringify(data));
+
+    //------ Dynamic Data Get Rates ---------//
+
+    //------ Static Data Get Rates ---------//
+    // const data = {
+    //   accountNumber: {
+    //     value: "510087720",
+    //   },
+    //   rateRequestControlParameters: {
+    //     returnTransitTimes: true,
+    //     servicesNeededOnRateFailure: true,
+    //     variableOptions: "FREIGHT_GUARANTEE",
+    //     rateSortOrder: "SERVICENAMETRADITIONAL",
+    //   },
+    //   requestedShipment: {
+    //     shipper: {
+    //       address: {
+    //         streetLines: ["965 Mission St #572", ""],
+    //         city: "San Francisco",
+    //         stateOrProvinceCode: "CA",
+    //         postalCode: "94103",
+    //         countryCode: "US",
+    //       },
+    //     },
+    //     recipient: {
+    //       address: {
+    //         streetLines: ["1092 Indian Summer Ct", ""],
+    //         city: "San Jose",
+    //         stateOrProvinceCode: "CA",
+    //         postalCode: "95122",
+    //         countryCode: "US",
+    //       },
+    //     },
+    //     shipDateStamp: "2023-03-24",
+    //     packagingType: "YOUR_PACKAGING",
+    //     pickupType: "USE_SCHEDULED_PICKUP",
+    //     rateRequestType: ["ACCOUNT"],
+    //     requestedPackageLineItems: [
+    //       {
+    //         weight: {
+    //           units: "LB",
+    //           value: "22",
+    //         },
+    //       },
+    //     ],
+    //   },
+    // };
     // console.log("data -----::::: " + JSON.stringify(data));
 
     //------ Static Data Get Rates ---------//
@@ -335,64 +335,86 @@ export default function ShipmentProgressStep({ navigation }) {
             scrollViewProps={defaultScrollViewProps}
           >
             {paymentModal ? (
-                <Dialog>
-                  <Formik
-                    initialValues={{
-                      email: "",
-                      holderName: "",
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
-                  >
-                    {({
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      values,
-                      errors,
-                      touched,
-                    }) => (
-                      <>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                          }}
+              <Dialog>
+                <Formik
+                  initialValues={{
+                    email: "",
+                    holderName: "",
+                  }}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit}
+                >
+                  {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                    touched,
+                  }) => (
+                    <>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text style={{ fontSize: 25, color: "CE9D62" }}>
+                          Card Details
+                        </Text>
+                        <Text
+                          style={{ fontWeight: "bold" }}
+                          onPress={closeModal}
                         >
-                          <Text style={{ fontSize: 25, color: "CE9D62" }}>
-                            Card Details
-                          </Text>
-                          <Text
-                            style={{ fontWeight: "bold" }}
-                            onPress={closeModal}
-                          >
-                            X
-                          </Text>
-                        </View>
+                          X
+                        </Text>
+                      </View>
 
-                        <TextInput
-                          style={styles.input}
-                          onChangeText={handleChange("email")}
-                          onBlur={handleBlur("email")}
-                          value={values.email}
-                          placeholder="Email"
-                          keyboardType="email-address"
-                        />
-                        {touched.email && errors.email && (
-                          <Text style={styles.error}>{errors.email}</Text>
-                        )}
-                        <TextInput
-                          style={styles.input}
-                          onChangeText={handleChange("holderName")}
-                          onBlur={handleBlur("holderName")}
-                          value={values.holderName}
-                          placeholder="holderName"
-                        />
-                        {touched.holderName && errors.holderName && (
-                          <Text style={styles.error}>{errors.holderName}</Text>
-                        )}
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={handleChange("email")}
+                        onBlur={handleBlur("email")}
+                        value={values.email}
+                        placeholder="Email"
+                        keyboardType="email-address"
+                      />
+                      {touched.email && errors.email && (
+                        <Text style={styles.error}>{errors.email}</Text>
+                      )}
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={handleChange("holderName")}
+                        onBlur={handleBlur("holderName")}
+                        value={values.holderName}
+                        placeholder="holderName"
+                      />
+                      {touched.holderName && errors.holderName && (
+                        <Text style={styles.error}>{errors.holderName}</Text>
+                      )}
 
-                        <CardForm
+                      <CardField
+                        postalCodeEnabled={true}
+                        placeholders={{
+                          number: "4242 4242 4242 4242",
+                        }}
+                        cardStyle={{
+                          backgroundColor: "#FFFFFF",
+                          textColor: "#000000",
+                        }}
+                        style={{
+                          width: "100%",
+                          height: 50,
+                          marginVertical: 30,
+                        }}
+                        onCardChange={(cardDetails) => {
+                          console.log("cardDetails", cardDetails);
+                        }}
+                        onFocus={(focusedField) => {
+                          console.log("focusField", focusedField);
+                        }}
+                      />
+
+                      {/* <CardForm
                           postalCodeEnabled={false}
                           onFormComplete={(cardDetails) => {
                             setCardDetails(cardDetails);
@@ -403,33 +425,33 @@ export default function ShipmentProgressStep({ navigation }) {
                             alignItems: "center",
                             textAlign: "center",
                           }}
-                        />
+                        /> */}
 
-                        <TouchableOpacity
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#CE9D62",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginLeft: 5,
+                          marginRight: 5,
+                          borderRadius: 8,
+                        }}
+                        onPress={handleSubmit}
+                      >
+                        <Text
                           style={{
-                            backgroundColor: "#CE9D62",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginLeft: 5,
-                            marginRight: 5,
-                            borderRadius: 8,
+                            color: "white",
+                            padding: 15,
+                            fontSize: 18,
                           }}
-                          onPress={handleSubmit}
                         >
-                          <Text
-                            style={{
-                              color: "white",
-                              padding: 15,
-                              fontSize: 18,
-                            }}
-                          >
-                            Validate
-                          </Text>
-                        </TouchableOpacity>
-                      </>
-                    )}
-                  </Formik>
-                </Dialog>
+                          Validate
+                        </Text>
+                      </TouchableOpacity>
+                    </>
+                  )}
+                </Formik>
+              </Dialog>
             ) : (
               ""
             )}
