@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     width:'100%',
     display: "flex",
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 16,
     justifyContent: "space-between",
     paddingLeft: -65,
     shadowColor:'blue' 

@@ -1,54 +1,40 @@
-// import React from "react";
-// import { View, StyleSheet } from "react-native";
-// import { CardForm } from "react-native-stripe-sdk";
+import React, { useState } from "react";
+import { View, TextInput, Button } from "react-native";
+import { Formik } from "formik";
+import DatePicker from "react-native-modern-datepicker";
 
-// function PaymentScreen() {
-//   const handleCardChange = (cardDetails) => {
-//     console.log("Card details", cardDetails);
-//   };
+const PaymentScreen = () => {
+  const [date, setDate] = useState(new Date());
 
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.cardFormContainer}>
-//         <CardForm
-//           onCardChange={handleCardChange}
-//           style={styles.cardForm}
-//           postalCodeEnabled={false}
-//           placeholder={{
-//             number: "Card Number",
-//             expiry: "MM/YY",
-//             cvc: "CVC",
-//           }}
-//         />
-//       </View>
-//     </View>
-//   );
-// }
+  return (
+    <Formik
+      initialValues={{
+        myDate: date,
+      }}
+      onSubmit={(values) => console.log(values)}
+    >
+      {(formikProps) => (
+        <View>
+          <DatePicker
+            style={{ width: "100%" }}
+            mode="calendar"
+            date={formikProps.values.myDate}
+            onDateChange={(value) => {
+              setDate(value);
+              formikProps.setFieldValue("myDate", value);
+            }}
+            // dateFormat="YYYY-MM-DD"
+          />
+          <TextInput
+            style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+            onChangeText={formikProps.handleChange("myDate")}
+            value={formikProps.values.myDate.toISOString().slice(0, 10)}
+          />
+          <Button title="Submit" onPress={formikProps.handleSubmit} />
+        </View>
+      )}
+    </Formik>
+  );
+};
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   cardFormContainer: {
-//     width: "80%",
-//     height: 200,
-//     alignItems: "center",
-//   },
-//   cardForm: {
-//     width: "100%",
-//     height: "100%",
-//     backgroundColor: "#f7f7f7",
-//     borderWidth: 1,
-//     borderColor: "#ccc",
-//     borderRadius: 5,
-//     paddingHorizontal: 10,
-//     paddingVertical: 20,
-//     fontSize: 16,
-//     color: "#333",
-//   },
-// });
-
-// export default PaymentScreen;
+export default PaymentScreen;

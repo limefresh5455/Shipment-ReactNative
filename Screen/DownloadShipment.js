@@ -14,114 +14,45 @@ import { Card } from "react-native-paper";
 let rateId;
 export default function DownloadShipment(props) {
   const [image, setImage] = useState();
-  console.log("props", props);
 
   //---------------- Download Label URL ----------------//
   useEffect(async () => {
-    // rateId = AsyncStorage.getItem("rate_id");
-
     //-------------- static data for label --------------//
-    let data = {
-      labelResponseOptions: "URL_ONLY",
-      requestedShipment: {
-        shipper: {
-          contact: {
-            personName: "MrsHippo",
-            phoneNumber: "4151234567",
-            companyName: "Google",
-          },
-          address: {
-            streetLines: ["1092 Indian Summer Ct "],
-            city: "San Jose",
-            stateOrProvinceCode: "CA",
-            postalCode: "95122",
-            countryCode: "US",
-          },
-        },
-        recipients: [
-          {
-            contact: {
-              personName: "MrsHippo",
-              phoneNumber: "4151234568",
-              companyName: "facebook",
-            },
-            address: {
-              streetLines: ["965 Mission St #572"],
-              city: "San Francisco",
-              stateOrProvinceCode: "CA",
-              postalCode: "94103",
-              countryCode: "US",
-            },
-          },
-        ],
-        shipDateStamp: "2023-03-24",
-        packagingType: "YOUR_PACKAGING",
-        serviceType: "FIRST_OVERNIGHT",
-        pickupType: "USE_SCHEDULED_PICKUP",
-        shippingChargesPayment: {
-          paymentType: "SENDER",
-        },
-        labelSpecification: {
-          imageType: "PDF",
-          labelStockType: "PAPER_85X11_TOP_HALF_LABEL",
-        },
-        requestedPackageLineItems: [
-          {
-            weight: {
-              units: "LB",
-              value: "22",
-            },
-          },
-        ],
-      },
-      accountNumber: {
-        value: "510087020",
-      },
-    };
-    //-------------- static data for label --------------//
-
-    //-------------- Dynamic data for label --------------//
-    getData = await AsyncStorage.getItem("user");
-    addrFromData = await AsyncStorage.getItem("addressFrom");
-    toaddressData = await AsyncStorage.getItem("addressTo");
-    let g = JSON.parse(getData);
-    let f = JSON.parse(addrFromData);
-    let t = JSON.parse(toaddressData);
-    // const data = {
+    // let data = {
     //   labelResponseOptions: "URL_ONLY",
     //   requestedShipment: {
     //     shipper: {
     //       contact: {
-    //         personName: f.firstname + "" + f.lastname,
-    //         phoneNumber: f.phone,
+    //         personName: "MrsHippo",
+    //         phoneNumber: "4151234567",
     //         companyName: "Google",
     //       },
     //       address: {
-    //         streetLines: [f.address],
-    //         city: f.city,
-    //         stateOrProvinceCode: f.state,
-    //         postalCode: f.zip,
-    //         countryCode: f.country,
+    //         streetLines: ["1092 Indian Summer Ct "],
+    //         city: "San Jose",
+    //         stateOrProvinceCode: "CA",
+    //         postalCode: "95122",
+    //         countryCode: "US",
     //       },
     //     },
     //     recipients: [
     //       {
     //         contact: {
-    //           personName: t.firstname + "" + f.lastname,
-    //           phoneNumber: t.phone,
+    //           personName: "MrsHippo",
+    //           phoneNumber: "4151234568",
     //           companyName: "facebook",
     //         },
     //         address: {
-    //           streetLines: [t.address],
-    //           city: t.city,
-    //           stateOrProvinceCode: t.state,
-    //           postalCode: t.zip,
-    //           countryCode: t.country,
+    //           streetLines: ["965 Mission St #572"],
+    //           city: "San Francisco",
+    //           stateOrProvinceCode: "CA",
+    //           postalCode: "94103",
+    //           countryCode: "US",
     //         },
     //       },
     //     ],
     //     shipDateStamp: "2023-03-24",
-    //     packagingType: g.packaging,
+    //     packagingType: "YOUR_PACKAGING",
     //     serviceType: "FIRST_OVERNIGHT",
     //     pickupType: "USE_SCHEDULED_PICKUP",
     //     shippingChargesPayment: {
@@ -134,8 +65,8 @@ export default function DownloadShipment(props) {
     //     requestedPackageLineItems: [
     //       {
     //         weight: {
-    //           units: g.mass,
-    //           value: g.weight,
+    //           units: "LB",
+    //           value: "22",
     //         },
     //       },
     //     ],
@@ -144,6 +75,72 @@ export default function DownloadShipment(props) {
     //     value: "510087020",
     //   },
     // };
+    //-------------- static data for label --------------//
+
+    //-------------- Dynamic data for label --------------//
+    getData = await AsyncStorage.getItem("user");
+    addrFromData = await AsyncStorage.getItem("addressFrom");
+    toaddressData = await AsyncStorage.getItem("addressTo");
+    let g = JSON.parse(getData);
+    let f = JSON.parse(addrFromData);
+    let t = JSON.parse(toaddressData);
+    const data = {
+      labelResponseOptions: "URL_ONLY",
+      requestedShipment: {
+        shipper: {
+          contact: {
+            personName: f.firstname + "" + f.lastname,
+            phoneNumber: f.phone,
+            companyName: "Google",
+          },
+          address: {
+            streetLines: [f.address],
+            city: f.city,
+            stateOrProvinceCode: f.state,
+            postalCode: f.zip,
+            countryCode: f.country,
+          },
+        },
+        recipients: [
+          {
+            contact: {
+              personName: t.firstname + "" + f.lastname,
+              phoneNumber: t.phone,
+              companyName: "facebook",
+            },
+            address: {
+              streetLines: [t.address],
+              city: t.city,
+              stateOrProvinceCode: t.state,
+              postalCode: t.zip,
+              countryCode: t.country,
+            },
+          },
+        ],
+        shipDateStamp: "2023-03-24",
+        packagingType: g.packaging,
+        serviceType: "FIRST_OVERNIGHT",
+        pickupType: "USE_SCHEDULED_PICKUP",
+        shippingChargesPayment: {
+          paymentType: "SENDER",
+        },
+        labelSpecification: {
+          imageType: "PDF",
+          labelStockType: "PAPER_85X11_TOP_HALF_LABEL",
+        },
+        requestedPackageLineItems: [
+          {
+            weight: {
+              units: g.mass,
+              value: g.weight,
+            },
+          },
+        ],
+      },
+      accountNumber: {
+        value: "510087020",
+      },
+    };
     //-------------- Dynamic data for label --------------//
 
     fetch("https://apis-sandbox.fedex.com/ship/v1/shipments", {
