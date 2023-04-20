@@ -56,6 +56,9 @@ const Trial = () => {
     setShow(!show);
   };
   const handleDate = (date) => {
+    const parts = date.split("/");
+    const b = parts[0] + "-" + parts[1] + "-" + parts[2];
+    date = b;
     setFormData({ ...formData, date });
     setShow(false);
   };

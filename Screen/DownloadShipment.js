@@ -117,7 +117,7 @@ export default function DownloadShipment(props) {
             },
           },
         ],
-        shipDateStamp: "2023-03-24",
+        shipDateStamp: g.date,
         packagingType: g.packaging,
         serviceType: "FIRST_OVERNIGHT",
         pickupType: "USE_SCHEDULED_PICKUP",
@@ -185,6 +185,7 @@ export default function DownloadShipment(props) {
     } catch (err) {
       console.log(err);
     }
+    alert("please check you file");
   };
 
   return (

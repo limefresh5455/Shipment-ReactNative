@@ -192,7 +192,7 @@ export default function ShipmentProgressStep({ navigation }) {
             countryCode: t.country,
           },
         },
-        shipDateStamp: "2023-03-24",
+        shipDateStamp: g.date,
         packagingType: g.packaging,
         pickupType: "USE_SCHEDULED_PICKUP",
         rateRequestType: ["ACCOUNT"],
